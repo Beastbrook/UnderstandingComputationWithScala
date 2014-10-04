@@ -24,4 +24,14 @@ class ExpressionSpec extends FlatSpec with Matchers {
     Expression.isReducible(unreducible) should be (false)
   }
 
+  "Expression#isReducible" should "check if 'this' is reducible" in {
+    val add: Expression = Add(Number(1), Number(2))
+    val num: Expression = Number(3)
+    val mul: Expression = Multiply(Add(Number(1), Number(2)), Number(3))
+
+    add.isReducible should be (true)
+    num.isReducible should be (false)
+    mul.isReducible should be (true)
+  }
+
 }
