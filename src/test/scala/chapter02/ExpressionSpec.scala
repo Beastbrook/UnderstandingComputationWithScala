@@ -35,11 +35,11 @@ class ExpressionSpec extends FlatSpec with Matchers {
   }
 
   "Expression#reduce" should "reduce expression to most reduced" in {
-    val exp: Expression = Add(
+    var exp: Expression = Add(
       Multiply(Number(2), Number(3)),
       Multiply(Number(5), Number(6))
     )
-    exp.reduce.toString should be ("Number(36)")
+    exp.reduce.reduce.reduce.toString should be ("Number(36)")
   }
 
 }
