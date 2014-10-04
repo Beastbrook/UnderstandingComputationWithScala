@@ -6,7 +6,7 @@ class ExpressionSpec extends FlatSpec with Matchers {
 
   "A Add" should "be created with two Numbers" in {
     val add: Expression = Add(Number(1), Number(2))
-    add.toString should be ("Add(Number(1),Number(2))")
+    add.toString should be ("(1 + 2)")
   }
 
   "A Add" should "create (1*2)+(3*4) with two Multiplies" in {
@@ -14,7 +14,7 @@ class ExpressionSpec extends FlatSpec with Matchers {
       Multiply(Number(1), Number(2)),
       Multiply(Number(3), Number(4))
     )
-    exp.toString should be ("Add(Multiply(Number(1),Number(2)),Multiply(Number(3),Number(4)))")
+    exp.toString should be ("(1 * 2 + 3 * 4)")
   }
 
   "Expression::isReducible" should "check if expression is reducible" in {
@@ -39,7 +39,7 @@ class ExpressionSpec extends FlatSpec with Matchers {
       Multiply(Number(2), Number(3)),
       Multiply(Number(5), Number(6))
     )
-    exp.reduce.reduce.reduce.toString should be ("Number(36)")
+    exp.reduce.reduce.reduce.toString should be ("36")
   }
 
 }

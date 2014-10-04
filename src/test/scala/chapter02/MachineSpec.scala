@@ -13,8 +13,8 @@ class MachineSpec extends FlatSpec with Matchers {
     val machineNextOneStep: Machine = machine.step
     val machineNextTwoStep: Machine = machineNextOneStep.step
 
-    machineNextOneStep.toString should be ("Machine(Add(Number(6),Multiply(Number(3),Number(4))))")
-    machineNextTwoStep.toString should be ("Machine(Add(Number(6),Number(12)))")
+    machineNextOneStep.toString should be ("Machine('(6 + 3 * 4)')")
+    machineNextTwoStep.toString should be ("Machine('(6 + 12)')")
   }
 
 }

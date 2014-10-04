@@ -18,12 +18,14 @@ case class Add(x: Expression, y: Expression) extends Expression {
     case Add(left: Expression, right: Expression) if right.isReducible =>
       Add(left, right.reduce)
     case _: Expression =>
-      Number(x.reduce.value + y.reduce.value)
+      Number(x.value + y.value)
   }
+  override def toString: String = s"(${x} + ${y})"
 }
 case class Number(x: Int) extends Expression {
   override def isReducible: Boolean = false
   override def value: Int = x
+  override def toString: String = x.toString
 }
 case class Multiply(x: Expression, y: Expression) extends Expression {
   override def reduce: Expression = this match {
@@ -32,6 +34,7 @@ case class Multiply(x: Expression, y: Expression) extends Expression {
     case Multiply(left: Expression, right: Expression) if right.isReducible =>
       Multiply(left, right.reduce)
     case _: Expression =>
-      Number(x.reduce.value * y.reduce.value)
+      Number(x.value * y.value)
   }
+  override def toString: String = s"${x} * ${y}"
 }
