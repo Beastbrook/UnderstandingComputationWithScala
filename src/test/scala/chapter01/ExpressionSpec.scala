@@ -17,4 +17,11 @@ class ExpressionSpec extends FlatSpec with Matchers {
     exp.toString should be ("Add(Multiply(Number(1),Number(2)),Multiply(Number(3),Number(4)))")
   }
 
+  "Expression::isReducible" should "check if expression is reducible" in {
+    val reducible = Add(Number(1), Number(2))
+    val unreducible = Number(100)
+    Expression.isReducible(reducible) should be (true)
+    Expression.isReducible(unreducible) should be (false)
+  }
+
 }
