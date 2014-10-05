@@ -38,3 +38,7 @@ case class Multiply(x: Expression, y: Expression) extends Expression {
   }
   override def toString: String = s"${x} * ${y}"
 }
+case class Bool(v: Boolean) extends Expression {
+  override def isReducible: Boolean = false
+  override def toString: String = if (v) "true" else "false"
+}
