@@ -3,6 +3,13 @@ package uc.expression
 abstract class Expression() {
   def isReducible: Boolean = true
   def reduce: Expression = this
+  def reduced: Expression = {
+    def go(exp: Expression): Expression = exp match {
+      case e: Expression if !(e.isReducible) => e
+      case e: Expression => go(e.reduce)
+    }
+    go(this)
+  }
   def value: Int = this.reduce.value
 }
 object Expression {
@@ -41,4 +48,12 @@ case class Multiply(x: Expression, y: Expression) extends Expression {
 case class Bool(v: Boolean) extends Expression {
   override def isReducible: Boolean = false
   override def toString: String = if (v) "true" else "false"
+}
+case class LessThan(left: Expression, right: Expression) extends Expression {
+  override def toString: String = s"${left} < ${right}"
+  override def reduce: Expression = this match {
+    case LessThan(left: Expression, rigth: Expression) if left.isReducible => LessThan(left.reduce, rigth)
+    case LessThan(left: Expression, rigth: Expression) if right.isReducible => LessThan(left, rigth.reduce)
+    case LessThan(left: Expression, rigth: Expression) => Bool(left.value < rigth.value)
+  }
 }

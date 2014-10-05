@@ -47,4 +47,21 @@ class ExpressionSpec extends FlatSpec with Matchers {
     bool.isReducible should be (false)
   }
 
+  "LessThan" should "be left first when reducing" in {
+    val lt: Expression = LessThan(
+      Add(Number(3), Number(4)),
+      Multiply(Number(4), Number(6))
+    )
+    lt.reduce.toString should be ("7 < 4 * 6")
+  }
+
+  "LessThan" should "retrun true when (3 + 4) < 4 * 6" in {
+   val lt: Expression = LessThan(
+      Add(Number(3), Number(4)),
+      Multiply(Number(4), Number(6))
+    )
+   val result = lt.reduced
+   result.toString should be ("true")
+  }
+
 }
