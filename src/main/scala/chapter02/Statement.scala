@@ -1,12 +1,13 @@
 package uc.simple
 
-abstract class Statement {
+trait Statement {
   def isReducible: Boolean = true
-  def reduce(env: Map[String, Expression]): (Statement, Map[String, Expression]) = (this, env)
+  def reduce(env: Map[String, Expression]): (Statement, Map[String, Expression])
 }
 case class DoNothing() extends Statement {
   override def toString: String = "DoNothing"
   override def isReducible: Boolean = false
+  override def reduce(env: Map[String, Expression]): (Statement, Map[String, Expression]) = (this, env)
 }
 case class Assign(v: Variable, expression: Expression) extends Statement {
   override def toString: String = s"${v} = ${expression}"

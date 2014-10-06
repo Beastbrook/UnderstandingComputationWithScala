@@ -1,6 +1,6 @@
 package uc.simple
 
-abstract class Expression() {
+trait Expression {
   def isReducible: Boolean = true
   def reduce(env: Map[String, Expression]): Expression = this
   def reduced(env: Map[String, Expression]): Expression = {
