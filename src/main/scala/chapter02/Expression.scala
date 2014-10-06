@@ -46,8 +46,16 @@ case class Multiply(x: Expression, y: Expression) extends Expression {
   override def toString: String = s"${x} * ${y}"
 }
 case class Bool(v: Boolean) extends Expression {
+  override def reduce(env: Map[String, Expression]): Expression = if (v) TRUE() else FALSE()
+  override def toString: String = if (v) TRUE().toString else FALSE().toString
+}
+case class TRUE() extends Expression {
   override def isReducible: Boolean = false
-  override def toString: String = if (v) "true" else "false"
+  override def toString: String = "true"
+}
+case class FALSE() extends Expression {
+  override def isReducible: Boolean = false
+  override def toString: String = "false"
 }
 case class LessThan(left: Expression, right: Expression) extends Expression {
   override def toString: String = s"${left} < ${right}"
@@ -58,6 +66,6 @@ case class LessThan(left: Expression, right: Expression) extends Expression {
   }
 }
 case class Variable(name: String) extends Expression {
-  override def toString = name
+  override def toString: String = name
   override def reduce(env: Map[String, Expression]) = env.get(name).orNull
 }

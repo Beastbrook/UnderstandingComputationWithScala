@@ -42,9 +42,11 @@ class ExpressionSpec extends FlatSpec with Matchers {
     exp.reduce(null).reduce(null).reduce(null).toString should be ("36")
   }
 
-  "Boolean" should "not be reducible" in {
-    val bool: Expression = Bool(true)
-    bool.isReducible should be (false)
+  "Boolean" should "have 2 patterns" in {
+    val t: Expression = Bool(true).reduce(null)
+    val f: Expression = Bool(false).reduce(null)
+    t should be (TRUE())
+    f should be (FALSE())
   }
 
   "LessThan" should "be left first when reducing" in {
