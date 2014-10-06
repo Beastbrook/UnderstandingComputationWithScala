@@ -1,4 +1,4 @@
-package uc.expression
+package uc.simple
 
 abstract class Expression() {
   def isReducible: Boolean = true

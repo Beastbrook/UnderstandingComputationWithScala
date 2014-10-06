@@ -1,4 +1,4 @@
-package uc.expression
+package uc.simple
 
 import org.scalatest._
 

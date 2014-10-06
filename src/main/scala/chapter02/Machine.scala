@@ -1,4 +1,4 @@
-package uc.expression
+package uc.simple
 
 case class Machine(expression: Expression) {
 
