@@ -27,4 +27,18 @@ class MachineSpec extends FlatSpec with Matchers {
     results.last._1.toString should be ("26")
   }
 
+  "A Machine" should "treat with Variable" in {
+    val statement: Statement = Assign(
+      Variable("x"),
+      Add(Multiply(Number(2), Number(3)), Number(2))
+    )
+    val cleanEnv: Map[String, Expression] = Map[String, Expression]()
+    val machine: Machine = Machine(statement, cleanEnv)
+
+    val results: List[(Statement, Map[String, Expression])] = machine.run
+
+    results.last._1.toString should be ("DoNothing")
+    results.last._2.toString should be ("Map(x -> 8)")
+  }
+
 }
