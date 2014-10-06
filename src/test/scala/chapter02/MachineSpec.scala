@@ -9,9 +9,9 @@ class MachineSpec extends FlatSpec with Matchers {
       Multiply(Number(2), Number(3)),
       Multiply(Number(3), Number(4))
     )
-    val machine: Machine = Machine(expression)
-    val machineNextOneStep: Machine = machine.step
-    val machineNextTwoStep: Machine = machineNextOneStep.step
+    val machine: Machine = Machine(expression, Map[String, Expression]())
+    val machineNextOneStep: Machine = machine.step(null)
+    val machineNextTwoStep: Machine = machineNextOneStep.step(null)
 
     machineNextOneStep.toString should be ("Machine('(6 + 3 * 4)')")
     machineNextTwoStep.toString should be ("Machine('(6 + 12)')")
@@ -22,7 +22,7 @@ class MachineSpec extends FlatSpec with Matchers {
       Multiply(Number(2), Number(3)),
       Multiply(Number(4), Number(5))
     )
-    val machine = Machine(expression)
+    val machine = Machine(expression, Map[String, Expression]())
     val results = machine.run
 
     results.length should be (4)

@@ -39,7 +39,7 @@ class ExpressionSpec extends FlatSpec with Matchers {
       Multiply(Number(2), Number(3)),
       Multiply(Number(5), Number(6))
     )
-    exp.reduce.reduce.reduce.toString should be ("36")
+    exp.reduce(null).reduce(null).reduce(null).toString should be ("36")
   }
 
   "Boolean" should "not be reducible" in {
@@ -52,7 +52,7 @@ class ExpressionSpec extends FlatSpec with Matchers {
       Add(Number(3), Number(4)),
       Multiply(Number(4), Number(6))
     )
-    lt.reduce.toString should be ("7 < 4 * 6")
+    lt.reduce(null).toString should be ("7 < 4 * 6")
   }
 
   "LessThan" should "retrun true when (3 + 4) < 4 * 6" in {
@@ -60,8 +60,17 @@ class ExpressionSpec extends FlatSpec with Matchers {
       Add(Number(3), Number(4)),
       Multiply(Number(4), Number(6))
     )
-   val result = lt.reduced
+   val result = lt.reduced(null)
    result.toString should be ("true")
+  }
+  "Variable" should "save Expression" in {
+    val cleanEnvironment: Map[String, Expression] = Map[String, Expression]()
+    val variableName: String = "hello"
+    val variableValue: Expression = Add(Multiply(Number(1), Number(2)), Number(4))
+    val env: Map[String, Expression] = cleanEnvironment + (variableName -> variableValue)
+    val variable: Expression = Variable(variableName)
+    variable.isReducible.toString should be ("true")
+    variable.reduce(env).toString should be ("(1 * 2 + 4)")
   }
 
 }
