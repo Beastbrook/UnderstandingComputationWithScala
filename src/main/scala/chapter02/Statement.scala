@@ -24,3 +24,20 @@ case class Exp(expression: Expression) extends Statement {
   }
   override def isReducible: Boolean = expression.isReducible
 }
+case class Sequence(statements: List[Statement]) extends Statement {
+  override def toString: String = statements.mkString("[\n", "\n", "\n]")
+  override def reduce(env: Map[String, Expression]): (Statement, Map[String, Expression]) = statements match {
+    case Nil => (DoNothing(), env)
+    case x :: Nil if x.isReducible => {
+      val next = x.reduce(env)
+      (Sequence(next._1 :: Nil), next._2)
+    }
+    case x :: Nil => (DoNothing(), env)
+    case x :: xs if x.isReducible => {
+      val next = x.reduce(env)
+      (Sequence(next._1 :: xs), next._2)
+    }
+    case _ :: xs => (Sequence(xs), env)
+  }
+  override def isReducible: Boolean = if (statements.size == 0) false else true
+}

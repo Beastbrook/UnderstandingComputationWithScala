@@ -10,14 +10,14 @@ case class Machine(statement: Statement, env: Map[String, Expression]) {
   override def toString: String = s"Machine('${statement.toString}', '${env}')"
 
   def run: List[(Statement, Map[String, Expression])] = {
-    def go(state: Statement, e: Map[String, Expression]): List[(Statement, Map[String, Expression])] = state match {
-      case s: Statement if !(s.isReducible) => (s, e) :: Nil
-      case s: Statement => {
-        val next: (Statement, Map[String, Expression]) = s.reduce(env)
-        (s, e) :: go(next._1, next._2)
+    def go(machine: Machine): List[(Statement, Map[String, Expression])] = machine match {
+      case Machine(s, e) if !(s.isReducible) => (s, e) :: Nil
+      case _ => {
+        val nextMachine: Machine = machine.step
+        (machine.statement, machine.env) :: go(Machine(nextMachine.statement, nextMachine.env))
       }
     }
-    go(statement, env)
+    go(this)
   }
 
 }

@@ -16,4 +16,15 @@ class StatementSpec extends FlatSpec with Matchers {
     onceReduced.toString should be ("x = 5")
   }
 
+  "Sequence" should "behave as Statement List" in {
+    val seq: Statement = Sequence(List(
+      Assign(Variable("x"), Number(3)),
+      Assign(Variable("y"), Add(Variable("x"), Number(1))),
+      Exp(Variable("y"))
+    ))
+    val cleanEnv: Map[String, Expression] = Map[String, Expression]()
+    val machine: Machine = Machine(seq, cleanEnv)
+    val results: List[(Statement, Map[String, Expression])] = machine.run
+  }
+
 }
