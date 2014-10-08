@@ -41,3 +41,11 @@ case class Sequence(statements: List[Statement]) extends Statement {
   }
   override def isReducible: Boolean = if (statements.size == 0) false else true
 }
+case class If(condition: Expression, consequence: Statement, alternative: Statement) extends Statement {
+  override def toString: String = s"if(${condition}) { ${consequence} } else { ${alternative} }"
+  override def reduce(env: Map[String, Expression]): (Statement, Map[String, Expression]) = condition.reduced(env) match {
+    case TRUE() => (consequence, env)
+    case FALSE() => (alternative, env)
+    case _ => (null, null)
+  }
+}
