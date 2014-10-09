@@ -46,5 +46,20 @@ class StatementSpec extends FlatSpec with Matchers {
     val results2 = machine2.run
     results2.last._2.toString should be ("Map(f -> 0)")
   }
+  "While" should "repeat statements while condition is true" in {
+    val whileStatement: Statement = While(
+      LessThan(Variable("i"), Number(5)),
+      Assign(Variable("i"), Add(Variable("i"), Number(1)))
+    )
+    val testSeq: Statement = Sequence(List(
+      Assign(Variable("i"), Number(0)),
+      whileStatement
+    ))
+    val cleanEnv = Map[String, Expression]()
+    val machine = Machine(testSeq, cleanEnv)
+    val results = machine.run
+
+    results.last._2.toString should be ("Map(i -> 5)")
+  }
 
 }

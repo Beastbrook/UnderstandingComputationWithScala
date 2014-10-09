@@ -49,3 +49,16 @@ case class If(condition: Expression, consequence: Statement, alternative: Statem
     case _ => (null, null)
   }
 }
+case class While(condition: Expression, body: Statement) extends Statement {
+  override def toString: String = s"while (${condition}) { ${body} }"
+  override def reduce(env: Map[String, Expression]): (Statement, Map[String, Expression]) = condition.reduced(env) match {
+    case FALSE() => (DoNothing(), env)
+    case TRUE() => {
+      val next = body.reduce(env)
+      (Sequence(List(
+        next._1,
+        While(condition, body)
+      )), next._2)
+    }
+  }
+}
