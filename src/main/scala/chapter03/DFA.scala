@@ -32,4 +32,5 @@ case class DFA[A](currentState: A, acceptStates: List[A], rulebook: Rulebook[A])
     rulebook
   )
   def readString(string: String): DFA[A] = if (string != "") readCharacter(string.head).readString(string.tail) else this
+  def isAcceptable(string: String): Boolean = readString(string).isAccepting
 }

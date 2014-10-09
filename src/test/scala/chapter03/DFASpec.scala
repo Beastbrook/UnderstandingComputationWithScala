@@ -59,4 +59,15 @@ class DFASpec extends FlatSpec with Matchers {
     dfa2.isAccepting should be (false)
   }
 
+  "DFA#isAcceptable" should "return if string is acceptable or not" in {
+    val rulebook: Rulebook[Int] = DFARulebook(List(
+      FARule(1, 'A', 2),
+      FARule(2, 'B', 3),
+      FARule(3, 'C', 1)
+    ))
+    val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
+    dfa.isAcceptable("ABC") should be (true)
+    dfa.isAcceptable("A") should be (false)
+  }
+
 }
