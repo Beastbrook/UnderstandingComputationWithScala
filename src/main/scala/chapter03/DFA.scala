@@ -26,4 +26,10 @@ case class DFARulebook[A](rules: List[Rule[A]]) extends Rulebook[A] {
 
 case class DFA[A](currentState: A, acceptStates: List[A], rulebook: Rulebook[A]) {
   def isAccepting: Boolean = acceptStates.contains(currentState)
+  def readCharacter(ch: Char): DFA[A] = DFA(
+    rulebook.nextState(currentState, ch).get,
+    acceptStates,
+    rulebook
+  )
+  def readString(string: String): DFA[A] = if (string != "") readCharacter(string.head).readString(string.tail) else this
 }

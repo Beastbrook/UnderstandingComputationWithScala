@@ -33,4 +33,30 @@ class DFASpec extends FlatSpec with Matchers {
     dfa.isAccepting should be (true)
   }
 
+  "DFA#readCharacter" should "create new DFA instance" in {
+    val rulebook: Rulebook[Int] = DFARulebook(List(
+      FARule(1, 'A', 2),
+      FARule(2, 'B', 3),
+      FARule(3, 'C', 1)
+    ))
+    val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
+    val dfa1: DFA[Int] = dfa.readCharacter('A')
+    dfa1.isAccepting should be (false)
+    val dfa2: DFA[Int] = dfa1.readCharacter('B')
+    dfa2.isAccepting should be (true)
+  }
+
+  "DFA#readString" should "create new DFA instance" in {
+    val rulebook: Rulebook[Int] = DFARulebook(List(
+      FARule(1, 'A', 2),
+      FARule(2, 'B', 3),
+      FARule(3, 'C', 1)
+    ))
+    val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
+    val dfa1: DFA[Int] = dfa.readString("ABC")
+    dfa1.isAccepting should be (true)
+    val dfa2: DFA[Int] = dfa.readString("A")
+    dfa2.isAccepting should be (false)
+  }
+
 }
