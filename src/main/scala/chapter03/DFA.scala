@@ -23,3 +23,7 @@ case class DFARulebook[A](rules: List[Rule[A]]) extends Rulebook[A] {
   override def nextState(state: A, character: Char): Option[A] = ruleFor(state, character).follow
   override def ruleFor(state: A, character: Char): Rule[A] = rules.find( _.canApplyTo(state, character) ).getOrElse(NoRule())
 }
+
+case class DFA[A](currentState: A, acceptStates: List[A], rulebook: Rulebook[A]) {
+  def isAccepting: Boolean = acceptStates.contains(currentState)
+}

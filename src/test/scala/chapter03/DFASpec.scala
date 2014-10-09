@@ -23,4 +23,14 @@ class DFASpec extends FlatSpec with Matchers {
     rulebook.nextState(3, 'A').getOrElse(0) should be (0)
   }
 
+  "DFA" should "accept specific state" in {
+    val rulebook: Rulebook[Int] = DFARulebook(List(
+      FARule(1, 'A', 2),
+      FARule(2, 'B', 3),
+      FARule(3, 'C', 1)
+    ))
+    val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
+    dfa.isAccepting should be (true)
+  }
+
 }
