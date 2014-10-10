@@ -51,4 +51,16 @@ class NFASpec extends FlatSpec with Matchers {
     nfa.readString("BB") should be (NFA(Set(1), Set(2), rulebook))
   }
 
+  "NFA#acceptString" should "return if the string is acceptable" in {
+    val rulebook: NFARulebook[Int] = NFARulebook(Set(
+      FARule(1, 'A', 2),
+      FARule(1, 'B', 1),
+      FARule(2, 'B', 3),
+      FARule(3, 'C', 1)
+    ))
+    val nfa: NFA[Int] = NFA(Set(1, 2), Set(2), rulebook)
+    nfa.acceptString("BBA") should be (true)
+    nfa.acceptString("CBC") should be (false)
+  }
+
 }

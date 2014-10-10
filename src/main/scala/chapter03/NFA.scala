@@ -31,4 +31,5 @@ case class NFA[A](currentStates: Set[A], acceptStates: Set[A], rulebook: NFARule
   def readString(string: String): NFA[A] =
     if (string == "") this
     else readCharacter(string.head).readString(string.tail)
+  def acceptString(string: String): Boolean = readString(string).isAccepting
 }
