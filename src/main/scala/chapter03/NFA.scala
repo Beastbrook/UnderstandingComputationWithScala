@@ -16,7 +16,10 @@ case class NoRule[A]() extends Rule[A] {
 }
 
 case class NFARulebook[A](rules: Set[Rule[A]]) {
-  def nextStates(states: Set[A], character: Char): Set[Option[A]] = states.flatMap( followRulesFor(_, character) )
+  def nextStates(states: Set[A], character: Char): Set[A] =
+    states.flatMap( followRulesFor(_, character) )
+      .filter( _ != None )
+      .map ( _.get )
   def followRulesFor(state: A, character: Char): Set[Option[A]] = rulesFor(state, character).map( _.follow )
   def rulesFor(state: A, character: Char): Set[Rule[A]] = rules.filter( _.canApplyTo(state, character) )
 }

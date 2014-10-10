@@ -10,9 +10,9 @@ class NFASpec extends FlatSpec with Matchers {
       FARule(2, 'B', 3),
       FARule(3, 'C', 1)
     ))
-    val nextStates: Set[Option[Int]] = rulebook.nextStates(Set(1, 2), 'B')
-    nextStates should be (Set(Some(3)))
-    val nextStates2: Set[Option[Int]] = rulebook.nextStates(Set(1), 'C')
+    val nextStates: Set[Int] = rulebook.nextStates(Set(1, 2), 'B')
+    nextStates should be (Set(3))
+    val nextStates2: Set[Int] = rulebook.nextStates(Set(1), 'C')
     nextStates2 should be (Set())
   }
 
