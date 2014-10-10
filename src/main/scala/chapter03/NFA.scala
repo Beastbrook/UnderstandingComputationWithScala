@@ -32,11 +32,15 @@ case class NFARulebook[A](rules: Set[Rule[A]]) {
 }
 
 case class NFA[A](currentStates: Set[A], acceptStates: Set[A], rulebook: NFARulebook[A]) {
-  def isAccepting: Boolean = (currentStates & acceptStates).size != 0
+  def isAccepting: Boolean =
+    (reachableStates & acceptStates).size != 0
   def readCharacter(character: Option[Char]): NFA[A] =
-    NFA(rulebook.nextStates(currentStates, character), acceptStates, rulebook)
+    NFA(rulebook.nextStates(reachableStates, character), acceptStates, rulebook)
   def readString(string: String): NFA[A] =
     if (string == "") this
     else readCharacter(Some(string.head)).readString(string.tail)
-  def acceptString(string: String): Boolean = readString(string).isAccepting
+  def acceptString(string: String): Boolean =
+    readString(string).isAccepting
+  def reachableStates: Set[A] =
+    rulebook.followFreeMoves(currentStates)
 }
