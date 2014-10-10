@@ -20,4 +20,12 @@ class RegularExpressionSpec extends FlatSpec with Matchers {
     pattern.matches("") should be (true)
   }
 
+  "Literal" should "matches a single ascii" in {
+    val pattern: Pattern = Literal('a')
+    pattern.matches("a") should be (true)
+    pattern.matches("aa") should be (false)
+    pattern.matches("") should be (false)
+    pattern.matches("b") should be (false)
+  }
+
 }
