@@ -76,4 +76,22 @@ class NFASpec extends FlatSpec with Matchers {
     rulebook.followFreeMoves(Set(1)) should be (Set(1, 2, 4))
   }
 
+  "NFA#acceptString" should "use free states" in {
+    val rulebook: NFARulebook[Int] = NFARulebook(Set(
+      FARule(1, None, 2),
+      FARule(1, None, 4),
+      FARule(2, Some('A'), 3),
+      FARule(3, Some('A'), 2),
+      FARule(4, Some('A'), 5),
+      FARule(5, Some('A'), 6),
+      FARule(6, Some('A'), 4)
+    ))
+    val nfa: NFA[Int] = NFA(Set(1), Set(2, 4), rulebook)
+    nfa.acceptString("AA") should be (true)
+    nfa.acceptString("AAA") should be (true)
+    nfa.acceptString("AAAA") should be (true)
+    nfa.acceptString("AAAAA") should be (false)
+    nfa.acceptString("AAAAAA") should be (true)
+  }
+
 }
