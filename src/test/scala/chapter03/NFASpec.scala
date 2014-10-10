@@ -16,4 +16,16 @@ class NFASpec extends FlatSpec with Matchers {
     nextStates2 should be (Set())
   }
 
+  "NFA#isAccepting" should "return acception or not" in {
+    val rulebook: NFARulebook[Int] = NFARulebook(Set(
+      FARule(1, 'A', 2),
+      FARule(2, 'B', 3),
+      FARule(3, 'C', 1)
+    ))
+    val nfa: NFA[Int] = NFA(Set(1, 2), Set(2), rulebook)
+    nfa.isAccepting should be (true)
+    val nfa2: NFA[Int] = NFA(Set(1, 3), Set(2), rulebook)
+    nfa2.isAccepting should be (false)
+  }
+
 }

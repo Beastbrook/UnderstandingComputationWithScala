@@ -20,3 +20,7 @@ case class NFARulebook[A](rules: Set[Rule[A]]) {
   def followRulesFor(state: A, character: Char): Set[Option[A]] = rulesFor(state, character).map( _.follow )
   def rulesFor(state: A, character: Char): Set[Rule[A]] = rules.filter( _.canApplyTo(state, character) )
 }
+
+case class NFA[A](currentStates: Set[A], acceptStates: Set[A], rulebook: NFARulebook[A]) {
+  def isAccepting: Boolean = (currentStates & acceptStates).size != 0
+}
