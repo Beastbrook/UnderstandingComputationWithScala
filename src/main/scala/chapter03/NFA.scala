@@ -1,0 +1,22 @@
+package uc.nfa
+
+sealed trait Rule[A] {
+  def canApplyTo(s: A, ch: Char): Boolean
+  def follow: Option[A]
+}
+case class FARule[A](state: A, character: Char, nextState: A) extends Rule[A] {
+  override def canApplyTo(s: A, ch: Char): Boolean = state == s && character == ch
+  override def follow: Option[A] = Some(nextState)
+  override def toString: String = s"FARule<${state} -- ${character} --> ${nextState}>"
+}
+case class NoRule[A]() extends Rule[A] {
+  override def toString: String = "No Rule"
+  override def follow: Option[A] = None
+  override def canApplyTo(s: A, ch: Char): Boolean = false
+}
+
+case class NFARulebook[A](rules: Set[Rule[A]]) {
+  def nextStates(states: Set[A], character: Char): Set[Option[A]] = states.flatMap( followRulesFor(_, character) )
+  def followRulesFor(state: A, character: Char): Set[Option[A]] = rulesFor(state, character).map( _.follow )
+  def rulesFor(state: A, character: Char): Set[Rule[A]] = rules.filter( _.canApplyTo(state, character) )
+}
