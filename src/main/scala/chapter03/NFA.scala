@@ -26,4 +26,6 @@ case class NFARulebook[A](rules: Set[Rule[A]]) {
 
 case class NFA[A](currentStates: Set[A], acceptStates: Set[A], rulebook: NFARulebook[A]) {
   def isAccepting: Boolean = (currentStates & acceptStates).size != 0
+  def readCharacter(character: Char): NFA[A] =
+    NFA(rulebook.nextStates(currentStates, character), acceptStates, rulebook)
 }

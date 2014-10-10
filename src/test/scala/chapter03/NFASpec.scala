@@ -28,4 +28,14 @@ class NFASpec extends FlatSpec with Matchers {
     nfa2.isAccepting should be (false)
   }
 
+  "NFA#readCharacter" should "return Set[NFA]" in {
+    val rulebook: NFARulebook[Int] = NFARulebook(Set(
+      FARule(1, 'A', 2),
+      FARule(2, 'B', 3),
+      FARule(3, 'C', 1)
+    ))
+    val nfa: NFA[Int] = NFA(Set(1, 2), Set(2), rulebook)
+    nfa.readCharacter('B') should be (NFA(Set(3), Set(2), rulebook))
+  }
+
 }
