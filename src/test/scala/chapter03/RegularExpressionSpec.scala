@@ -14,4 +14,10 @@ class RegularExpressionSpec extends FlatSpec with Matchers {
     pattern.inspect should be ("/(ab|a)*/")
   }
 
+  "Empty" should "matches ''" in {
+    val pattern: Pattern = Empty()
+    pattern.matches("a") should be (false)
+    pattern.matches("") should be (true)
+  }
+
 }
