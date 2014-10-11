@@ -1,6 +1,7 @@
 package uc.nfa
 
 import org.scalatest._
+import uc.rule._
 
 class NFASpec extends FlatSpec with Matchers {
 

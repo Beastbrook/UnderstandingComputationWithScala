@@ -1,6 +1,7 @@
 package uc.regularexpression
 
 import uc.nfa._
+import uc.rule._
 
 sealed trait Pattern {
   def precidence: Int

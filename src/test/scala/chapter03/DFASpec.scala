@@ -1,6 +1,7 @@
 package uc.dfa
 
 import org.scalatest._
+import uc.rule._
 
 class DFASpec extends FlatSpec with Matchers {
 
