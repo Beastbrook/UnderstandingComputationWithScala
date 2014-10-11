@@ -42,4 +42,21 @@ class RegularExpressionSpec extends FlatSpec with Matchers {
     pattern2.matches("") should be (false)
   }
 
+  "Choose" should "matches selection" in {
+    val pattern: Pattern = Choose(
+      Literal('a'),
+      Literal('b')
+    )
+    pattern.matches("a") should be (true)
+    pattern.matches("b") should be (true)
+    pattern.matches("c") should be (false)
+    val pattern2: Pattern = Concatenate(
+      Choose(Literal('a'), Literal('b')),
+      Literal('c')
+    )
+    pattern2.matches("ac") should be (true)
+    pattern2.matches("bc") should be (true)
+    pattern2.matches("abc") should be (false)
+  }
+
 }
