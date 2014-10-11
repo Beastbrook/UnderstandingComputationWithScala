@@ -9,4 +9,6 @@ case class NFASimulation[A](nfa: NFA[A]) {
     NFA(states, nfa.acceptStates, nfa.rulebook)
       .readCharacter(character)
       .currentStates
+  def rulesFor(state: Set[A]): Set[Rule[Set[A]]] =
+    nfa.rulebook.alphabet.map( (c) => FARule(state, Some(c), nextState(state, Some(c))) )
 }
