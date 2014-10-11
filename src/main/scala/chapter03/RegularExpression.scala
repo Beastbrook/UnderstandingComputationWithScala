@@ -70,6 +70,15 @@ case class Choose(first: Pattern, second: Pattern) extends Pattern {
 }
 case class Repeat(pattern: Pattern) extends Pattern {
   override def toString: String = pattern.bracket(precidence) + "*"
-  override def toNFA: NFA[Object] = null
+  override def toNFA: NFA[Object] = {
+    val patternNFA: NFA[Object] = pattern.toNFA
+    val startState: Object = new Object()
+    val acceptStates: Set[Object] = patternNFA.acceptStates | Set(startState)
+    val rules: Set[Rule[Object]] = patternNFA.rulebook.rules |
+      patternNFA.acceptStates.flatMap((from) => patternNFA.currentStates.map((to) => FARule(from, None, to))) |
+      patternNFA.currentStates.map( (state) => FARule(startState, None, state) )
+    val rulebook: NFARulebook[Object] = NFARulebook(rules)
+    NFA(Set(startState), acceptStates, rulebook)
+  }
   override def precidence: Int = 2
 }

@@ -59,4 +59,17 @@ class RegularExpressionSpec extends FlatSpec with Matchers {
     pattern2.matches("abc") should be (false)
   }
 
+  "Repeat" should "match at any times" in {
+    val pattern: Pattern = Repeat(Literal('a'))
+    pattern.matches("") should be (true)
+    pattern.matches("a") should be (true)
+    pattern.matches("aa") should be (true)
+    pattern.matches("aab") should be (false)
+    val pattern2: Pattern = Repeat(Concatenate(Literal('a'), Literal('b')))
+    pattern2.matches("") should be (true)
+    pattern2.matches("ab") should be (true)
+    pattern2.matches("abab") should be (true)
+    pattern2.matches("ababa") should be (false)
+  }
+
 }
