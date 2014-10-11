@@ -77,6 +77,20 @@ class NFASpec extends FlatSpec with Matchers {
     rulebook.followFreeMoves(Set(1)) should be (Set(1, 2, 4))
   }
 
+  "NFARulebook#followFreeMoves" should "check ... " in {
+    val rulebook: NFARulebook[Int] = NFARulebook(Set(
+      FARule(1, Some('a'), 1), FARule(1, Some('a'), 2), FARule(1, None, 2),
+      FARule(2, Some('b'), 3),
+      FARule(3, None, 2), FARule(3, Some('b'), 1)
+    ))
+    rulebook.followFreeMoves(Set(1)) should be (Set(1, 2))
+    rulebook.followFreeMoves(Set(2)) should be (Set(2))
+    rulebook.followFreeMoves(Set(3)) should be (Set(2, 3))
+    rulebook.followFreeMoves(Set(1, 2)) should be (Set(1, 2))
+    rulebook.followFreeMoves(Set(2, 3)) should be (Set(2, 3))
+    rulebook.followFreeMoves(Set(1, 3)) should be (Set(1, 2, 3))
+  }
+
   "NFA#acceptString" should "use free states" in {
     val rulebook: NFARulebook[Int] = NFARulebook(Set(
       FARule(1, None, 2),
@@ -93,6 +107,16 @@ class NFASpec extends FlatSpec with Matchers {
     nfa.acceptString("AAAA") should be (true)
     nfa.acceptString("AAAAA") should be (false)
     nfa.acceptString("AAAAAA") should be (true)
+  }
+
+  "NFA#reachableStates" should "return states" in {
+    val rulebook: NFARulebook[Int] = NFARulebook(Set(
+      FARule(1, Some('a'), 1), FARule(1, Some('a'), 2), FARule(1, None, 2),
+      FARule(2, Some('b'), 3),
+      FARule(3, None, 2), FARule(3, Some('b'), 1)
+    ))
+    val nfa = NFA(Set(2, 3), Set(2), rulebook)
+    nfa.reachableStates should be (Set(2, 3))
   }
 
 }

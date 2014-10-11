@@ -4,8 +4,8 @@ import uc.rule._
 
 case class NFARulebook[A](rules: Set[Rule[A]]) {
   def nextStates(states: Set[A], character: Option[Char]): Set[A] =
-    states.flatMap( followRulesFor(_, character) )
-      .filter( _ != None )
+    states
+      .flatMap( followRulesFor(_, character) )
       .map ( _.get )
   def followRulesFor(state: A, character: Option[Char]): Set[Option[A]] =
     rulesFor(state, character).map( _.follow )
@@ -21,8 +21,10 @@ case class NFARulebook[A](rules: Set[Rule[A]]) {
 case class NFA[A](currentStates: Set[A], acceptStates: Set[A], rulebook: NFARulebook[A]) {
   def isAccepting: Boolean =
     (reachableStates & acceptStates).size != 0
-  def readCharacter(character: Option[Char]): NFA[A] =
-    NFA(rulebook.nextStates(reachableStates, character), acceptStates, rulebook)
+  def readCharacter(character: Option[Char]): NFA[A] = {
+    val n: NFA[A] = NFA(rulebook.nextStates(reachableStates, character), acceptStates, rulebook)
+    NFA(n.reachableStates, n.acceptStates, n.rulebook)
+  }
   def readString(string: String): NFA[A] =
     if (string == "") this
     else readCharacter(Some(string.head)).readString(string.tail)
