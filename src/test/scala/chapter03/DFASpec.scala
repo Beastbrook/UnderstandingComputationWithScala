@@ -5,17 +5,17 @@ import org.scalatest._
 class DFASpec extends FlatSpec with Matchers {
 
   "A FARule" should "follow specific state and character" in {
-    val rule: Rule[Int] = FARule(1, 'A', 2)
-    rule.canApplyTo(1, 'A') should be (true)
-    rule.canApplyTo(2, 'B') should be (false)
+    val rule: Rule[Int] = FARule(1, Some('A'), 2)
+    rule.canApplyTo(1, Some('A')) should be (true)
+    rule.canApplyTo(2, Some('B')) should be (false)
     rule.follow.get should be (2)
   }
 
   "A DFARulebook" should "search rule by character" in {
     val rulebook: Rulebook[Int] = DFARulebook(List(
-      FARule(1, 'A', 2),
-      FARule(2, 'B', 3),
-      FARule(3, 'C', 1)
+      FARule(1, Some('A'), 2),
+      FARule(2, Some('B'), 3),
+      FARule(3, Some('C'), 1)
     ))
     rulebook.nextState(1, 'A').get should be (2)
     rulebook.nextState(2, 'B').get should be (3)
@@ -25,9 +25,9 @@ class DFASpec extends FlatSpec with Matchers {
 
   "DFA" should "accept specific state" in {
     val rulebook: Rulebook[Int] = DFARulebook(List(
-      FARule(1, 'A', 2),
-      FARule(2, 'B', 3),
-      FARule(3, 'C', 1)
+      FARule(1, Some('A'), 2),
+      FARule(2, Some('B'), 3),
+      FARule(3, Some('C'), 1)
     ))
     val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
     dfa.isAccepting should be (true)
@@ -35,9 +35,9 @@ class DFASpec extends FlatSpec with Matchers {
 
   "DFA#readCharacter" should "create new DFA instance" in {
     val rulebook: Rulebook[Int] = DFARulebook(List(
-      FARule(1, 'A', 2),
-      FARule(2, 'B', 3),
-      FARule(3, 'C', 1)
+      FARule(1, Some('A'), 2),
+      FARule(2, Some('B'), 3),
+      FARule(3, Some('C'), 1)
     ))
     val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
     val dfa1: DFA[Int] = dfa.readCharacter('A')
@@ -48,9 +48,9 @@ class DFASpec extends FlatSpec with Matchers {
 
   "DFA#readString" should "create new DFA instance" in {
     val rulebook: Rulebook[Int] = DFARulebook(List(
-      FARule(1, 'A', 2),
-      FARule(2, 'B', 3),
-      FARule(3, 'C', 1)
+      FARule(1, Some('A'), 2),
+      FARule(2, Some('B'), 3),
+      FARule(3, Some('C'), 1)
     ))
     val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
     val dfa1: DFA[Int] = dfa.readString("ABC")
@@ -61,9 +61,9 @@ class DFASpec extends FlatSpec with Matchers {
 
   "DFA#isAcceptable" should "return if string is acceptable or not" in {
     val rulebook: Rulebook[Int] = DFARulebook(List(
-      FARule(1, 'A', 2),
-      FARule(2, 'B', 3),
-      FARule(3, 'C', 1)
+      FARule(1, Some('A'), 2),
+      FARule(2, Some('B'), 3),
+      FARule(3, Some('C'), 1)
     ))
     val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
     dfa.isAcceptable("ABC") should be (true)
