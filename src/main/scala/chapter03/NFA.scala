@@ -16,6 +16,11 @@ case class NFARulebook[A](rules: Set[Rule[A]]) {
     if (moreStates.subsetOf(states)) states
     else followFreeMoves(states | moreStates)
   }
+  def alphabet: Set[Char] =
+    rules
+      .map( _.ch )
+      .filter( _ != None)
+      .map( _.get )
 }
 
 case class NFA[A](currentStates: Set[A], acceptStates: Set[A], rulebook: NFARulebook[A]) {

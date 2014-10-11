@@ -119,4 +119,13 @@ class NFASpec extends FlatSpec with Matchers {
     nfa.reachableStates should be (Set(2, 3))
   }
 
+  "NFARulebook#alphabet" should "alphabets from rules" in {
+    val rulebook: NFARulebook[Int] = NFARulebook(Set(
+      FARule(1, Some('a'), 1), FARule(1, Some('a'), 2), FARule(1, None, 2),
+      FARule(2, Some('b'), 3),
+      FARule(3, None, 2), FARule(3, Some('b'), 1)
+    ))
+    rulebook.alphabet should be (Set('a', 'b'))
+  }
+
 }
