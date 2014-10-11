@@ -36,7 +36,19 @@ case class Literal(character: Char) extends Pattern {
 case class Concatenate(first: Pattern, second: Pattern) extends Pattern {
   override def toString: String =
     first.bracket(precidence) + second.bracket(precidence)
-  override def toNFA: NFA[Object] = null
+  override def toNFA: NFA[Object] = {
+    val firstNFA: NFA[Object] = first.toNFA
+    val secondNFA: NFA[Object] = second.toNFA
+    val startStates: Set[Object] = firstNFA.currentStates
+    val acceptStates: Set[Object] = secondNFA.acceptStates
+    val extraRules: Set[Rule[Object]] =
+      firstNFA
+        .acceptStates
+        .flatMap( (from) => secondNFA.currentStates.map( (to) => FARule[Object](from, None, to) ) )
+    val rules = extraRules | firstNFA.rulebook.rules | secondNFA.rulebook.rules
+    val rulebook: NFARulebook[Object] = NFARulebook[Object](rules)
+    NFA[Object](startStates, acceptStates, rulebook)
+  }
   override def precidence: Int = 1
 }
 case class Choose(first: Pattern, second: Pattern) extends Pattern {
