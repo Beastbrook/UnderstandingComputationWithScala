@@ -17,4 +17,5 @@ case class NFASimulation[A](nfa: NFA[A]) {
     if (moreStates.subsetOf(states)) (states, rules)
     else discoverStatesAndRules(states | moreStates)
   }
+  def toDFA: DFA[A] = null
 }

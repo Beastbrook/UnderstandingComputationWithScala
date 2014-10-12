@@ -13,7 +13,7 @@ class DFASpec extends FlatSpec with Matchers {
   }
 
   "A DFARulebook" should "search rule by character" in {
-    val rulebook: Rulebook[Int] = DFARulebook(List(
+    val rulebook: Rulebook[Int] = DFARulebook(Set(
       FARule(1, Some('A'), 2),
       FARule(2, Some('B'), 3),
       FARule(3, Some('C'), 1)
@@ -25,22 +25,22 @@ class DFASpec extends FlatSpec with Matchers {
   }
 
   "DFA" should "accept specific state" in {
-    val rulebook: Rulebook[Int] = DFARulebook(List(
+    val rulebook: Rulebook[Int] = DFARulebook(Set(
       FARule(1, Some('A'), 2),
       FARule(2, Some('B'), 3),
       FARule(3, Some('C'), 1)
     ))
-    val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
+    val dfa: DFA[Int] = DFA(1, Set(1, 3), rulebook)
     dfa.isAccepting should be (true)
   }
 
   "DFA#readCharacter" should "create new DFA instance" in {
-    val rulebook: Rulebook[Int] = DFARulebook(List(
+    val rulebook: Rulebook[Int] = DFARulebook(Set(
       FARule(1, Some('A'), 2),
       FARule(2, Some('B'), 3),
       FARule(3, Some('C'), 1)
     ))
-    val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
+    val dfa: DFA[Int] = DFA(1, Set(1, 3), rulebook)
     val dfa1: DFA[Int] = dfa.readCharacter('A')
     dfa1.isAccepting should be (false)
     val dfa2: DFA[Int] = dfa1.readCharacter('B')
@@ -48,12 +48,12 @@ class DFASpec extends FlatSpec with Matchers {
   }
 
   "DFA#readString" should "create new DFA instance" in {
-    val rulebook: Rulebook[Int] = DFARulebook(List(
+    val rulebook: Rulebook[Int] = DFARulebook(Set(
       FARule(1, Some('A'), 2),
       FARule(2, Some('B'), 3),
       FARule(3, Some('C'), 1)
     ))
-    val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
+    val dfa: DFA[Int] = DFA(1, Set(1, 3), rulebook)
     val dfa1: DFA[Int] = dfa.readString("ABC")
     dfa1.isAccepting should be (true)
     val dfa2: DFA[Int] = dfa.readString("A")
@@ -61,12 +61,12 @@ class DFASpec extends FlatSpec with Matchers {
   }
 
   "DFA#isAcceptable" should "return if string is acceptable or not" in {
-    val rulebook: Rulebook[Int] = DFARulebook(List(
+    val rulebook: Rulebook[Int] = DFARulebook(Set(
       FARule(1, Some('A'), 2),
       FARule(2, Some('B'), 3),
       FARule(3, Some('C'), 1)
     ))
-    val dfa: DFA[Int] = DFA(1, List(1, 3), rulebook)
+    val dfa: DFA[Int] = DFA(1, Set(1, 3), rulebook)
     dfa.isAcceptable("ABC") should be (true)
     dfa.isAcceptable("A") should be (false)
   }

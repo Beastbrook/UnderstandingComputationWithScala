@@ -67,5 +67,19 @@ class NFASimulationSpec extends FlatSpec with Matchers {
       FARule(Set(1, 2, 3), Some('b'), Set(1, 2, 3))
     ))
   }
-
+/*
+  "NFASimulation#toDFA" should "create DFA" in {
+    val nfaRulebook: NFARulebook[Int] = NFARulebook(Set(
+      FARule(1, Some('a'), 1), FARule(1, Some('a'), 2), FARule(1, None, 2),
+      FARule(2, Some('b'), 3),
+      FARule(3, None, 2), FARule(3, Some('b'), 1)
+    ))
+    val nfa: NFA[Int] = NFA(Set(1, 2), Set(3), nfaRulebook)
+    val simulation: NFASimulation[Int] = NFASimulation(nfa)
+    val dfa: DFA[Int] = simulation.toDFA
+    dfa.isAcceptable("aaa") should be (false)
+    dfa.isAcceptable("aab") should be (true)
+    dfa.isAcceptable("bbbabb") should be (true)
+  }
+*/
 }
