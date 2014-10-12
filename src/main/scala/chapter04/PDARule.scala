@@ -12,4 +12,8 @@ case class PDARule[A](
     state == configuration.state &&
       popCharacter == configuration.stack.head &&
       character == ch
+  def follow(configuration: PDAConfiguration[A]): PDAConfiguration[A] =
+    PDAConfiguration(nextState, nextStack(configuration))
+  def nextStack(configuration: PDAConfiguration[A]): List[Option[Char]] =
+    pushCharacters ++ configuration.stack.tail
 }
