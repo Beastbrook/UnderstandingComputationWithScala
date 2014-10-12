@@ -16,4 +16,6 @@ class PDARuleSpec extends FlatSpec with Matchers {
     rule.appliesTo(configuration, Some('(')) should be (true)
   }
 
+
+
 }
