@@ -38,4 +38,34 @@ class NFASimulationSpec extends FlatSpec with Matchers {
     ))
   }
 
+  "NFASimulation#discoverStatesAndRules" should "Tuple(states, rules)" in {
+    val nfaRulebook: NFARulebook[Int] = NFARulebook(Set(
+      FARule(1, Some('a'), 1), FARule(1, Some('a'), 2), FARule(1, None, 2),
+      FARule(2, Some('b'), 3),
+      FARule(3, None, 2), FARule(3, Some('b'), 1)
+    ))
+    val nfa: NFA[Int] = NFA(Set(1, 2), Set(3), nfaRulebook)
+    val simulation: NFASimulation[Int] = NFASimulation(nfa)
+    val startState: Set[Int] = nfa.currentStates
+    val discoveredStatesAndRules: (Set[Set[Int]], Set[Rule[Set[Int]]]) = simulation.discoverStatesAndRules(Set(startState))
+    val states: Set[Set[Int]] = discoveredStatesAndRules._1
+    val rules: Set[Rule[Set[Int]]] = discoveredStatesAndRules._2
+    states should be (Set(
+      Set(1, 2),
+      Set(2, 3),
+      Set(),
+      Set(1, 2, 3)
+    ))
+    rules should be (Set(
+      FARule(Set(1, 2), Some('a'), Set(1, 2)),
+      FARule(Set(1, 2), Some('b'), Set(2, 3)),
+      FARule(Set(2, 3), Some('a'), Set()),
+      FARule(Set(2, 3), Some('b'), Set(1, 2, 3)),
+      FARule(Set(), Some('a'), Set()),
+      FARule(Set(), Some('b'), Set()),
+      FARule(Set(1, 2, 3), Some('a'), Set(1, 2)),
+      FARule(Set(1, 2, 3), Some('b'), Set(1, 2, 3))
+    ))
+  }
+
 }
