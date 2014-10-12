@@ -17,5 +17,12 @@ case class NFASimulation[A](nfa: NFA[A]) {
     if (moreStates.subsetOf(states)) (states, rules)
     else discoverStatesAndRules(states | moreStates)
   }
-  def toDFA: DFA[A] = null
+  def toDFA: DFA[Set[A]] = {
+    val startState: Set[A] = nfa.currentStates
+    val discoveredStatesAndRules: (Set[Set[A]], Set[Rule[Set[A]]]) = discoverStatesAndRules(Set(startState))
+    val states: Set[Set[A]] = discoveredStatesAndRules._1
+    val rules: Set[Rule[Set[A]]] = discoveredStatesAndRules._2
+    val acceptStates: Set[Set[A]] = states.filter( (state) => NFA(state, nfa.acceptStates, nfa.rulebook).isAccepting )
+    DFA(startState, acceptStates, DFARulebook(rules))
+  }
 }
