@@ -43,4 +43,23 @@ class DPDASpec extends FlatSpec with Matchers {
     dpda.isAccepting should be (true)
   }
 
+  "DPDA#readCharacter" should "return DPDA with next configuration" in {
+    val rulebook: DPDARulebook[Int] = DPDARulebook(Set(
+      PDARule(1, Some('('), 2,      None, List(Some('b'), None)      ),
+      PDARule(2, Some('('), 2, Some('b'), List(Some('b'), Some('b')) ),
+      PDARule(2, Some(')'), 2, Some('b'), List()                     ),
+      PDARule(2,      None, 1,      None, List(None)                 )
+    ))
+    val currentConfiguration: PDAConfiguration[Int] = PDAConfiguration(1, List(None))
+    val dpda: DPDA[Int] = DPDA(currentConfiguration, Set(1), rulebook)
+    dpda.readCharacter(Some('(')) should be (
+      DPDA(PDAConfiguration(2, List(Some('b'), None)), Set(1), rulebook))
+    dpda.readCharacter(Some('(')).readCharacter(Some('(')) should be (
+      DPDA(PDAConfiguration(2, List(Some('b'), Some('b'), None)), Set(1), rulebook))
+    dpda.readCharacter(Some('(')).readCharacter(Some('(')).readCharacter(Some(')')) should be (
+      DPDA(PDAConfiguration(2, List(Some('b'), None)), Set(1), rulebook))
+    dpda.readCharacter(Some('(')).readCharacter(Some('(')).readCharacter(Some(')')).readCharacter(Some(')')) should be (
+      DPDA(PDAConfiguration(2, List(None)), Set(1), rulebook))
+  }
+
 }
