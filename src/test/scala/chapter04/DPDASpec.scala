@@ -62,4 +62,27 @@ class DPDASpec extends FlatSpec with Matchers {
       DPDA(PDAConfiguration(2, List(None)), Set(1), rulebook))
   }
 
+  "DPDA#readString" should "return DPDA with next configuration" in {
+    val rulebook: DPDARulebook[Int] = DPDARulebook(Set(
+      PDARule(1, Some('('), 2,      None, List(Some('b'), None)      ),
+      PDARule(2, Some('('), 2, Some('b'), List(Some('b'), Some('b')) ),
+      PDARule(2, Some(')'), 2, Some('b'), List()                     ),
+      PDARule(2,      None, 1,      None, List(None)                 )
+    ))
+    val currentConfiguration: PDAConfiguration[Int] = PDAConfiguration(1, List(None))
+    val dpda: DPDA[Int] = DPDA(currentConfiguration, Set(1), rulebook)
+    dpda.readString("(())") should be (DPDA(PDAConfiguration(2, List(None)), Set(1), rulebook))
+  }
+
+  "DPDARulebook#appliesTo" should "return if rulebook has the rule or not" in {
+    val rulebook: DPDARulebook[Int] = DPDARulebook(Set(
+      PDARule(1, Some('('), 2,      None, List(Some('b'), None)      ),
+      PDARule(2, Some('('), 2, Some('b'), List(Some('b'), Some('b')) ),
+      PDARule(2, Some(')'), 2, Some('b'), List()                     ),
+      PDARule(2,      None, 1,      None, List(None)                 )
+    ))
+    val configuration: PDAConfiguration[Int] = PDAConfiguration(2, List(None))
+    rulebook.appliesTo(configuration, None) should be (true)
+  }
+
 }
