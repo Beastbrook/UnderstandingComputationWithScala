@@ -31,4 +31,16 @@ class DPDASpec extends FlatSpec with Matchers {
     conf3 should be (PDAConfiguration(2, List(Some('b'), None)))
   }
 
+  "DPDA#isAccepting" should "return if current configuration is accepted or not" in {
+    val rulebook: DPDARulebook[Int] = DPDARulebook(Set(
+      PDARule(1, Some('('), 2,      None, List(Some('b'), None)      ),
+      PDARule(2, Some('('), 2, Some('b'), List(Some('b'), Some('b')) ),
+      PDARule(2, Some(')'), 2, Some('b'), List()                     ),
+      PDARule(2,      None, 1,      None, List(None)                 )
+    ))
+    val currentConfiguration: PDAConfiguration[Int] = PDAConfiguration(1, List(None))
+    val dpda: DPDA[Int] = DPDA(currentConfiguration, Set(1), rulebook)
+    dpda.isAccepting should be (true)
+  }
+
 }
