@@ -16,7 +16,12 @@ case class DPDA[A](
   currentConfiguration: PDAConfiguration[A],
   acceptStates: Set[A],
   rulebook: DPDARulebook[A]) {
-  def isAccepting: Boolean = acceptStates.contains(currentConfiguration.state)
+  def isAccepting: Boolean =
+    acceptStates.contains(
+      rulebook
+        .followFreeMoves(currentConfiguration)
+        .state
+    )
   def readCharacter(character: Option[Char]): DPDA[A] =
     DPDA(rulebook.nextConfiguration(currentConfiguration, character), acceptStates, rulebook)
   def readString(string: String): DPDA[A] =
