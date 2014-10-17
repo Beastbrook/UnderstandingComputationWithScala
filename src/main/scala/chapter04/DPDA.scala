@@ -14,7 +14,7 @@ case class DPDARulebook[A](rules: Set[PDARule[A]]) {
 
 case class DPDA[A](
   currentConfiguration: PDAConfiguration[A],
-  acceptStates: Set[A],
+  acceptStates: Set[Option[A]],
   rulebook: DPDARulebook[A]) {
   def isAccepting: Boolean =
     acceptStates.contains(
@@ -27,4 +27,6 @@ case class DPDA[A](
   def readString(string: String): DPDA[A] =
     if (string == "") this
     else readCharacter(Some(string.head)).readString(string.tail)
+  def accepts(string: String): Boolean =
+    readString(string).isAccepting
 }

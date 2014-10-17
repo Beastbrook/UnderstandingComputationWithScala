@@ -6,26 +6,26 @@ class PDARuleSpec extends FlatSpec with Matchers {
 
   "PDARule#appliesTo" should "return if state and stack is appliable" in {
     val rule: PDARule[Int] = PDARule(
-      1,
+      Some(1),
       Some('('),
-      2,
+      Some(2),
       None,
       List(Some('b'), None)
     )
-    val configuration: PDAConfiguration[Int] = PDAConfiguration(1, List(None))
+    val configuration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
     rule.appliesTo(configuration, Some('(')) should be (true)
   }
 
   "PDARule#follow" should "return configuration of next state" in {
     val rule: PDARule[Int] = PDARule(
-      1,
+      Some(1),
       Some('('),
-      2,
+      Some(2),
       None,
       List(Some('b'), None)
     )
-    val configuration: PDAConfiguration[Int] = PDAConfiguration(1, List(None))
-    rule.follow(configuration) should be (PDAConfiguration(2, List(Some('b'), None)))
+    val configuration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
+    rule.follow(configuration) should be (PDAConfiguration(Some(2), List(Some('b'), None)))
   }
 
 }
