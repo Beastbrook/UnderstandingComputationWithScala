@@ -7,6 +7,9 @@ case class DPDARulebook[A](rules: Set[PDARule[A]]) {
     rules.find( _.appliesTo(configuration, character) ).getOrElse(null)
   def appliesTo(configuration: PDAConfiguration[A], character: Option[Char]): Boolean =
     !(ruleFor(configuration, character) == null)
+  def followFreeMoves(configuration: PDAConfiguration[A]): PDAConfiguration[A] =
+    if (appliesTo(configuration, None)) followFreeMoves(nextConfiguration(configuration, None))
+    else configuration
 }
 
 case class DPDA[A](

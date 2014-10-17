@@ -85,4 +85,15 @@ class DPDASpec extends FlatSpec with Matchers {
     rulebook.appliesTo(configuration, None) should be (true)
   }
 
+  "DPDARulebook#followFreeMoves" should "return configuration which can be reached freely" in {
+    val rulebook: DPDARulebook[Int] = DPDARulebook(Set(
+      PDARule(1, Some('('), 2,      None, List(Some('b'), None)      ),
+      PDARule(2, Some('('), 2, Some('b'), List(Some('b'), Some('b')) ),
+      PDARule(2, Some(')'), 2, Some('b'), List()                     ),
+      PDARule(2,      None, 1,      None, List(None)                 )
+    ))
+    val configuration: PDAConfiguration[Int] = PDAConfiguration(2, List(None))
+    rulebook.followFreeMoves(configuration) should be (PDAConfiguration(1, List(None)))
+  }
+
 }
