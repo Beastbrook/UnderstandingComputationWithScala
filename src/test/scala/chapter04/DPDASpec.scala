@@ -113,7 +113,7 @@ class DPDASpec extends FlatSpec with Matchers {
     dpda.readString("(()(").isAccepting should be (false)
     dpda.readString("(())").isAccepting should be (true)
   }
-/*
+
   "DPDA#accepts" should "return if arg is acceptable or not" in {
     val rulebook: DPDARulebook[Int] = DPDARulebook(Set(
       PDARule(Some(1), Some('('), Some(2),      None, List(Some('b'), None)      ),
@@ -124,9 +124,9 @@ class DPDASpec extends FlatSpec with Matchers {
     val configuration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
     val dpda: DPDA[Int] = DPDA(configuration, Set[Option[Int]](Some(1)), rulebook)
 
-    dpda.accepts("((((())))))") should be (true)
+    dpda.accepts("((((())())))") should be (true)
     dpda.accepts("(()()()()(()))") should be (true)
     dpda.accepts("(()(()())") should be (false)
   }
-*/
+
 }

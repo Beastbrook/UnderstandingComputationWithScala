@@ -22,8 +22,11 @@ case class DPDA[A](
         .followFreeMoves(currentConfiguration)
         .state
     )
+  def nextConfiguration(character: Option[Char]): PDAConfiguration[A] =
+    if (rulebook.appliesTo(currentConfiguration, character)) rulebook.nextConfiguration(currentConfiguration, character)
+    else currentConfiguration.stuck
   def readCharacter(character: Option[Char]): DPDA[A] =
-    DPDA(rulebook.nextConfiguration(currentConfiguration, character), acceptStates, rulebook)
+    DPDA(nextConfiguration(character), acceptStates, rulebook)
   def readString(string: String): DPDA[A] =
     if (string == "") this
     else readCharacter(Some(string.head)).readString(string.tail)
