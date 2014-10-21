@@ -62,7 +62,7 @@ class DPDASpec extends FlatSpec with Matchers {
       DPDA(PDAConfiguration(Some(2), List(Some('b'), None)), Set[Option[Int]](Some(1)), rulebook)
     )
     dpda.readCharacter(Some('(')).readCharacter(Some('(')).readCharacter(Some(')')).readCharacter(Some(')')) should be (
-      DPDA(PDAConfiguration(Some(2), List(None)), Set[Option[Int]](Some(1)), rulebook)
+      DPDA(PDAConfiguration(Some(1), List(None)), Set[Option[Int]](Some(1)), rulebook)
     )
   }
 
@@ -75,7 +75,7 @@ class DPDASpec extends FlatSpec with Matchers {
     ))
     val currentConfiguration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
     val dpda: DPDA[Int] = DPDA(currentConfiguration, Set[Option[Int]](Some(1)), rulebook)
-    dpda.readString("(())") should be (DPDA(PDAConfiguration(Some(2), List(None)), Set[Option[Int]](Some(1)), rulebook))
+    dpda.readString("(())") should be (DPDA(PDAConfiguration(Some(1), List(None)), Set[Option[Int]](Some(1)), rulebook))
   }
 
   "DPDARulebook#appliesTo" should "return if rulebook has the rule or not" in {
@@ -127,6 +127,23 @@ class DPDASpec extends FlatSpec with Matchers {
     dpda.accepts("((((())())))") should be (true)
     dpda.accepts("(()()()()(()))") should be (true)
     dpda.accepts("(()(()())") should be (false)
+  }
+
+  "DPDA" should "be able to treat with two kinds of parameters" in {
+    val rulebook: DPDARulebook[Int] = DPDARulebook(Set(
+      PDARule(Some(1), Some('a'), Some(2), None, List(Some('a'), None)),
+      PDARule(Some(1), Some('b'), Some(2), None, List(Some('b'), None)),
+      PDARule(Some(2), Some('a'), Some(2), Some('a'), List(Some('a'), Some('a'))),
+      PDARule(Some(2), Some('b'), Some(2), Some('b'), List(Some('b'), Some('b'))),
+      PDARule(Some(2), Some('a'), Some(2), Some('b'), List()),
+      PDARule(Some(2), Some('b'), Some(2), Some('a'), List()),
+      PDARule(Some(2), None, Some(1), None, List(None))
+    ))
+    val configuration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
+    val dpda: DPDA[Int] = DPDA(configuration, Set(Some(1)), rulebook)
+    //dpda.accepts("ab") should be (true)
+    //dpda.accepts("aba") should be (false)
+    dpda.accepts("ababab") should be (true)
   }
 
 }
