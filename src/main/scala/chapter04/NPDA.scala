@@ -13,4 +13,7 @@ case class NPDA[A](
     val freeNext: Set[PDAConfiguration[A]] = rulebook.followFreeMoves(next)
     NPDA(freeNext, acceptStates, rulebook)
   }
+  def readString(string: String): NPDA[A] =
+    if (string == "") this
+    else readCharacter(Some(string.head)).readString(string.tail)
 }
