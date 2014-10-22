@@ -7,4 +7,9 @@ case class NPDARulebook[A](rules: Set[PDARule[A]]) {
     rulesFor(configuration, character).map( _.follow(configuration) )
   def nextConfigurations(configurations: Set[PDAConfiguration[A]], character: Option[Char]) =
     configurations.flatMap( followRulesFor(_, character) )
+  def followFreeMoves(configurations: Set[PDAConfiguration[A]]): Set[PDAConfiguration[A]] = {
+    val moreConfigurations: Set[PDAConfiguration[A]] = nextConfigurations(configurations, None)
+    if (moreConfigurations.subsetOf(configurations)) configurations
+    else followFreeMoves(configurations | moreConfigurations)
+  }
 }
