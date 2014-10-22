@@ -36,4 +36,17 @@ class NPDASpec extends FlatSpec with Matchers {
     npda.isAccepting should be (true)
   }
 
+  "readCharacter" should "return next NPDA whitch have a character" in {
+    npda.readCharacter(Some('a')) should be (
+      NPDA(
+        Set(
+          PDAConfiguration(Some(1), List(Some('a'), None)),
+          PDAConfiguration(Some(2), List(Some('a'), None))
+        ),
+        Set[Option[Int]](Some(3)),
+        rulebook
+      )
+    )
+  }
+
 }

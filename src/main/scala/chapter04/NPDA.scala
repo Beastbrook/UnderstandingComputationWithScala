@@ -8,4 +8,9 @@ case class NPDA[A](
     rulebook.followFreeMoves(currentConfigurations)
   def isAccepting: Boolean =
     current.exists( (c) => acceptStates.contains(c.state) )
+  def readCharacter(character: Option[Char]): NPDA[A] = {
+    val next: Set[PDAConfiguration[A]] = rulebook.nextConfigurations(current, character)
+    val freeNext: Set[PDAConfiguration[A]] = rulebook.followFreeMoves(next)
+    NPDA(freeNext, acceptStates, rulebook)
+  }
 }
