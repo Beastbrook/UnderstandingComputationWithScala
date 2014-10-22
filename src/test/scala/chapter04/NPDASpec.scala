@@ -32,4 +32,8 @@ class NPDASpec extends FlatSpec with Matchers {
     ))
   }
 
+  "isAccepting" should "return if current state is accepted or not" in {
+    npda.isAccepting should be (true)
+  }
+
 }
