@@ -141,9 +141,32 @@ class DPDASpec extends FlatSpec with Matchers {
     ))
     val configuration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
     val dpda: DPDA[Int] = DPDA(configuration, Set(Some(1)), rulebook)
-    //dpda.accepts("ab") should be (true)
-    //dpda.accepts("aba") should be (false)
+    dpda.accepts("ab") should be (true)
+    dpda.accepts("aba") should be (false)
     dpda.accepts("ababab") should be (true)
+  }
+
+  "DPDA" should "be able to accept palindrome only if middle is specialized" in {
+    val rulebook: DPDARulebook[Int] = DPDARulebook(Set(
+      PDARule(Some(1), Some('a'), Some(1), None, List(Some('a'), None)),
+      PDARule(Some(1), Some('a'), Some(1), Some('a'), List(Some('a'), Some('a'))),
+      PDARule(Some(1), Some('a'), Some(1), Some('b'), List(Some('a'), Some('b'))),
+      PDARule(Some(1), Some('b'), Some(1), None, List(Some('b'), None)),
+      PDARule(Some(1), Some('b'), Some(1), Some('b'), List(Some('b'), Some('b'))),
+      PDARule(Some(1), Some('b'), Some(1), Some('a'), List(Some('b'), Some('a'))),
+      PDARule(Some(1), Some('m'), Some(2), None, List(None)),
+      PDARule(Some(1), Some('m'), Some(2), Some('a'), List(Some('a'))),
+      PDARule(Some(1), Some('m'), Some(2), Some('b'), List(Some('b'))),
+      PDARule(Some(2), Some('a'), Some(2), Some('a'), List()),
+      PDARule(Some(2), Some('b'), Some(2), Some('b'), List()),
+      PDARule(Some(2), None, Some(3), None, List(None))
+    ))
+    val configuration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
+    val dpda: DPDA[Int] = DPDA(configuration, Set(Some(3)), rulebook)
+
+    dpda.accepts("abmba") should be (true)
+    dpda.accepts("ababmabab") should be (false)
+    dpda.accepts("babababbmbbababab") should be (true)
   }
 
 }
