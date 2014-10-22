@@ -62,4 +62,11 @@ class NPDASpec extends FlatSpec with Matchers {
     )
   }
 
+  "accepts" should "return if NPDA accepts the string or not" in {
+    npda.accepts("abba") should be (true)
+    npda.accepts("abb") should be (false)
+    npda.accepts("") should be (true)
+    npda.accepts("abaabbaaba") should be (true)
+  }
+
 }

@@ -16,4 +16,6 @@ case class NPDA[A](
   def readString(string: String): NPDA[A] =
     if (string == "") this
     else readCharacter(Some(string.head)).readString(string.tail)
+  def accepts(string: String): Boolean =
+    readString(string).isAccepting
 }
