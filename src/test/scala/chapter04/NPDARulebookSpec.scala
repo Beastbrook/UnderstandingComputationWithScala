@@ -18,17 +18,25 @@ class NPDARulebookSpec extends FlatSpec with Matchers {
     PDARule(Some(2), Some('b'), Some(2), Some('b'), List()),
     PDARule(Some(2), None, Some(3), None, List(Some('a'), Some('b')))
   ))
+  val configuration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
+  val configurations: Set[PDAConfiguration[Int]] = Set(
+    configuration
+  )
 
   "rulesFor" should "return a set of rules whitch is appliable" in {
-    val configuration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
     rulebook.rulesFor(configuration, Some('a')) should be (Set(
       PDARule(Some(1), Some('a'), Some(1), None, List(Some('a'), None))
     ))
   }
 
   "followRulesFor" should "return a set of configuration that rule follows" in {
-    val configuration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
     rulebook.followRulesFor(configuration, Some('a')) should be (Set(
+      PDAConfiguration(Some(1), List(Some('a'), None))
+    ))
+  }
+
+  "nextConfigurations" should "return a set of configuration" in {
+    rulebook.nextConfigurations(configurations, Some('a')) should be (Set(
       PDAConfiguration(Some(1), List(Some('a'), None))
     ))
   }
