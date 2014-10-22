@@ -16,7 +16,7 @@ class NPDARulebookSpec extends FlatSpec with Matchers {
     PDARule(Some(1), None, Some(2), Some('b'), List(Some('b'))),
     PDARule(Some(2), Some('a'), Some(2), Some('a'), List()),
     PDARule(Some(2), Some('b'), Some(2), Some('b'), List()),
-    PDARule(Some(2), None, Some(3), None, List(Some('a'), Some('b')))
+    PDARule(Some(2), None, Some(3), None, List(None))
   ))
   val configuration: PDAConfiguration[Int] = PDAConfiguration(Some(1), List(None))
   val configurations: Set[PDAConfiguration[Int]] = Set(
