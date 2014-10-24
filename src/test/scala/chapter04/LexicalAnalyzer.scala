@@ -4,7 +4,7 @@ import scala.util.matching.Regex
 
 object LexicalAnalyzer {
 
-  val grammar: List[(Char, Regex)] = List(
+  val GRAMMAR: List[(Char, Regex)] = List(
     ('i', """\A(if)(?![a-z0-9])""".r),
     ('e', """\A(else)(?![a-z0-9])""".r),
     ('w', """\A(while)(?![a-z0-9])""".r),
@@ -32,7 +32,7 @@ object LexicalAnalyzer {
   }
 
   def ruleFor(string: String): (Char, Regex) =
-    grammar.find(rule => rule._2.findFirstIn(string).getOrElse("") != "").get
+    GRAMMAR.find(rule => rule._2.findFirstIn(string).getOrElse("") != "").get
 
   def analyze(string: String): List[Char] =
     if (string == "") Nil
