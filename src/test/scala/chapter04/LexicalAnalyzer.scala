@@ -5,10 +5,10 @@ import scala.util.matching.Regex
 object LexicalAnalyzer {
 
   val grammar: List[(Char, Regex)] = List(
-    ('i', """\Aif""".r),
-    ('e', """\Aelse""".r),
-    ('w', """\Awhile""".r),
-    ('d', """\Ado-nothing""".r),
+    ('i', """\A(if)(?![a-z0-9])""".r),
+    ('e', """\A(else)(?![a-z0-9])""".r),
+    ('w', """\A(while)(?![a-z0-9])""".r),
+    ('d', """\A(do-nothing)(?![a-z0-9])""".r),
     ('(', """\A\(""".r),
     (')', """\A\)""".r),
     ('{', """\A\{""".r),
@@ -19,7 +19,7 @@ object LexicalAnalyzer {
     ('*', """\A\*""".r),
     ('<', """\A<""".r),
     ('n', """\A[0-9]+""".r),
-    ('b', """\Atrue|false""".r),
+    ('b', """\A(true|false)(?![a-z0-9])""".r),
     ('v', """\A[a-z]+""".r)
   )
 

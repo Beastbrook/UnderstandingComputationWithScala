@@ -28,4 +28,9 @@ class LexicalAnalyzerSpec extends FlatSpec with Matchers {
     ))
   }
 
+  "analyze" should "be able to treat special variable name" in {
+    val string = "x = falseeee"
+    LexicalAnalyzer.analyze(string) should be (List('v', '=', 'v'))
+  }
+
 }
