@@ -11,4 +11,10 @@ case class Tape[A](
     val r = right.mkString("", "", "")
     s"#<tape ${l}${m}${r}>"
   }
+  def moveHeadLeft: Tape[A] =
+    if (left.size == 0) Tape(List[A](), blank, middle :: right, blank)
+    else Tape(left.reverse.tail.reverse, left.reverse.head, middle :: right, blank)
+  def moveHeadRight: Tape[A] =
+    if (right.size == 0) Tape((middle :: left.reverse).reverse, blank, List[A](), blank)
+    else Tape((middle :: left.reverse).reverse, right.head, right.tail, blank)
 }
