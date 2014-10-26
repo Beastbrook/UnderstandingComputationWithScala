@@ -23,4 +23,9 @@ class TapeSpec extends FlatSpec with Matchers {
     tape.moveHeadRight.toString should be ("#<tape 1011(_)>")
   }
 
+  "write" should "return new tape that middle is replaced" in {
+    tape.write('0').toString should be ("#<tape 101(0)>")
+    tape.moveHeadRight.write('1').toString should be ("#<tape 1011(1)>")
+  }
+
 }

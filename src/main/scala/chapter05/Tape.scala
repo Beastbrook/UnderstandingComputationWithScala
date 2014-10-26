@@ -17,4 +17,6 @@ case class Tape[A](
   def moveHeadRight: Tape[A] =
     if (right.size == 0) Tape((middle :: left.reverse).reverse, blank, List[A](), blank)
     else Tape((middle :: left.reverse).reverse, right.head, right.tail, blank)
+  def write(newMiddle: A): Tape[A] =
+    Tape(left, newMiddle, right, blank)
 }
