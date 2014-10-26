@@ -33,4 +33,12 @@ class DTMSpec extends FlatSpec with Matchers {
     dtm.run.currentConfiguration.tape.toString should be ("#<tape 110(0)_>")
   }
 
+  "isStuck" should "return if current state is stuck or not" in {
+    val stuckConfiguration: TMConfiguration[Int,Char] =
+      TMConfiguration(1, Tape(List('2', '1'), '1', List('1', '0'), '_'))
+    val dtm: DTM[Int,Char] = DTM(stuckConfiguration, Set(3), rulebook)
+    dtm.run.isStuck should be (true)
+    dtm.run.isAccepting should be (false)
+  }
+
 }

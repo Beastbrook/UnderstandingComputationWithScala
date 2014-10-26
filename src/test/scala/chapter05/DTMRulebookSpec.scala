@@ -24,4 +24,9 @@ class DTMRulebookSpec extends FlatSpec with Matchers {
       TMConfiguration(1, Tape(List('1', '0'), '1', List('0'), '_')))
   }
 
+  "appliesTo" should "return if rulebook is appliable or not" in {
+    rulebook.appliesTo(start) should be (true)
+    rulebook.appliesTo(TMConfiguration(2, Tape(List('_'), '2', List('_'), '_'))) should be (false)
+  }
+
 }

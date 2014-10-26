@@ -8,8 +8,10 @@ case class DTM[A,B](
     acceptStates.contains(currentConfiguration.state)
   def step: DTM[A,B] =
     DTM(rulebook.nextConfiguration(currentConfiguration), acceptStates, rulebook)
+  def isStuck: Boolean =
+    !isAccepting && !rulebook.appliesTo(currentConfiguration)
   @scala.annotation.tailrec
   final def run: DTM[A,B] =
-    if (isAccepting) this
+    if (isAccepting || isStuck) this
     else step.run
 }
