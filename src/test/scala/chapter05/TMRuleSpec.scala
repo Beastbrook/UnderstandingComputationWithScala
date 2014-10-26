@@ -16,4 +16,10 @@ class TMRuleSpec extends FlatSpec with Matchers {
     rule.nextTape(TMConfiguration(1, Tape(List[Char](), '0', List[Char](), '_'))).toString should be ("#<tape 1(_)>")
   }
 
+  "follow" should "return next configuration that follow the rule" in {
+    val start: TMConfiguration[Int, Char] = TMConfiguration(1, Tape(List[Char](), '0', List[Char](), '_'))
+    val expected: TMConfiguration[Int,Char] = TMConfiguration(2, Tape(List('1'), '_', List[Char](), '_'))
+    rule.follow(start) should be (expected)
+  }
+
 }

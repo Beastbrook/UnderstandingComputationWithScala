@@ -19,4 +19,6 @@ case class TMRule[A,B](
     case LEFT => configuration.tape.write(writeCharacter.get).moveHeadLeft
     case RIGHT => configuration.tape.write(writeCharacter.get).moveHeadRight
   }
+  def follow(configuration: TMConfiguration[A,B]): TMConfiguration[A,B] =
+    TMConfiguration(nextState, nextTape(configuration))
 }
