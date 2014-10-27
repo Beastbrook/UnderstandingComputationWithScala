@@ -14,4 +14,5 @@ case class DTM[A,B](
   final def run: DTM[A,B] =
     if (isAccepting || isStuck) this
     else step.run
+
 }
