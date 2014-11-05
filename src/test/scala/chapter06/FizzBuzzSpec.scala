@@ -17,4 +17,19 @@ class FizzBuzzSpec extends FlatSpec with Matchers {
     fizzbuzz(95) should be ("Buzz")
   }
 
+  "ONE,TWO,THREE" should "be able to translate to number" in {
+    FizzBuzz.toInt(FizzBuzz.ZERO) should be (0)
+    FizzBuzz.toInt(FizzBuzz.ONE) should be (1)
+    FizzBuzz.toInt(FizzBuzz.TWO) should be (2)
+    FizzBuzz.toInt(FizzBuzz.THREE) should be (3)
+    FizzBuzz.toInt(FizzBuzz.FIVE) should be (5)
+    FizzBuzz.toInt(FizzBuzz.FIFTEEN) should be (15)
+    FizzBuzz.toInt(FizzBuzz.HANDRED) should be (100)
+  }
+
+  "TRUE,FALSE" should "be able to translate to boolean" in {
+    FizzBuzz.toBoolean(FizzBuzz.TRUE) should be (true)
+    FizzBuzz.toBoolean(FizzBuzz.FALSE) should be (false)
+  }
+
 }
