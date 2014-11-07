@@ -32,4 +32,11 @@ class FizzBuzzSpec extends FlatSpec with Matchers {
     FizzBuzz.toBoolean(FizzBuzz.FALSE) should be (false)
   }
 
+  "IF" should "work like if" in {
+    FizzBuzz.toInt(FizzBuzz.IF(FizzBuzz.TRUE)(FizzBuzz.ONE)(FizzBuzz.TWO).asInstanceOf[FizzBuzz.FBInt]) should be (1)
+    FizzBuzz.toInt(FizzBuzz.IF(FizzBuzz.FALSE)(FizzBuzz.ONE)(FizzBuzz.TWO).asInstanceOf[FizzBuzz.FBInt]) should be (2)
+    FizzBuzz.IF(FizzBuzz.TRUE)("happy")("sad").asInstanceOf[String] should be ("happy")
+    FizzBuzz.IF(FizzBuzz.FALSE)("happy")("sad").asInstanceOf[String] should be ("sad")
+  }
+
 }
