@@ -15,17 +15,17 @@ object FizzBuzz {
       })
 
   // type definition
-  type FBInt  = (Int => Int) => (Int => Int)
+  type FBInt  = (Any => Any) => (Any => Any)
   type FBBool = Any => Any => Any
 
   // Number
-  val ZERO: FBInt    = (p: (Int => Int)) => { (x: Int) => x }
-  val ONE: FBInt     = (p: (Int => Int)) => { (x: Int) => p(x) }
-  val TWO: FBInt     = (p: (Int => Int)) => { (x: Int) => p(p(x)) }
-  val THREE: FBInt   = (p: (Int => Int)) => { (x: Int) => p(p(p(x))) }
-  val FIVE: FBInt    = (p: (Int => Int)) => { (x: Int) => p(p(p(p(p(x))))) }
-  val FIFTEEN: FBInt = (p: (Int => Int)) => { (x: Int) => p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(x))))))))))))))) }
-  val HANDRED: FBInt = (p: (Int => Int)) => { (x: Int) =>
+  val ZERO: FBInt    = (p: (Any => Any)) => { (x: Any) => x }
+  val ONE: FBInt     = (p: (Any => Any)) => { (x: Any) => p(x) }
+  val TWO: FBInt     = (p: (Any => Any)) => { (x: Any) => p(p(x)) }
+  val THREE: FBInt   = (p: (Any => Any)) => { (x: Any) => p(p(p(x))) }
+  val FIVE: FBInt    = (p: (Any => Any)) => { (x: Any) => p(p(p(p(p(x))))) }
+  val FIFTEEN: FBInt = (p: (Any => Any)) => { (x: Any) => p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(x))))))))))))))) }
+  val HANDRED: FBInt = (p: (Any => Any)) => { (x: Any) =>
     p(p(p(p(p(p(p(p(p(p(
     p(p(p(p(p(p(p(p(p(p(
     p(p(p(p(p(p(p(p(p(p(
@@ -58,8 +58,8 @@ object FizzBuzz {
     (bool: FBBool) => bool
 
   // converters
-  def toInt(f: (Int => Int) => (Int => Int)): Int =
-    f(_ + 1)(0)
+  def toInt(f: FBInt): Int =
+    f(_.asInstanceOf[Int] + 1)(0).asInstanceOf[Int]
   def toBoolean(f: Any => Any => Any): Boolean =
     f(true)(false).asInstanceOf[Boolean]
   def toFBBool(b: Boolean): FBBool =
