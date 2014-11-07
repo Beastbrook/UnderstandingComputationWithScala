@@ -53,11 +53,7 @@ object FizzBuzz {
 
   // Selection
   val IF: FBBool => Any => Any => Any =
-    (bool: FBBool) => {
-      (a: Any) => {
-        (b: Any) => bool(a)(b)
-      }
-    }
+    (bool: FBBool) => bool
 
   // converters
   def toInt(f: (Int => Int) => (Int => Int)): Int =
