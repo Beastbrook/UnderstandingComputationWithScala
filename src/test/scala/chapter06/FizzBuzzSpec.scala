@@ -39,4 +39,9 @@ class FizzBuzzSpec extends FlatSpec with Matchers {
     FizzBuzz.IF(FizzBuzz.FALSE)("happy")("sad").asInstanceOf[String] should be ("sad")
   }
 
+  "IS_ZERO" should "return true if n == 0" in {
+    FizzBuzz.toBoolean(FizzBuzz.IS_ZERO(FizzBuzz.ZERO)) should be (true)
+    FizzBuzz.toBoolean(FizzBuzz.IS_ZERO(FizzBuzz.ONE)) should be (false)
+  }
+
 }

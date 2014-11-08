@@ -57,6 +57,9 @@ object FizzBuzz {
   val IF: FBBool => Any => Any => Any =
     (bool: FBBool) => bool
 
+  val IS_ZERO: FBInt => FBBool =
+    (n: FBInt) => n(_ => (FALSE))(TRUE).asInstanceOf[FBBool]
+
   // converters
   def toInt(f: FBInt): Int =
     f(_.asInstanceOf[Int] + 1)(0).asInstanceOf[Int]
