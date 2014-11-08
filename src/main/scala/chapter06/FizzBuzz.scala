@@ -49,11 +49,16 @@ object FizzBuzz {
     ))))))))))
     ))))))))))
   }
-  val INCREMENT: FBInt => FBInt = (n: FBInt) => {
-    (p: Any => Any) => {
-      (x: Any) => p(n(p)(x))
+  val SLIDE: Any => Any =
+    (p: Any) => PAIR(RIGHT(p.asInstanceOf[FBPair]))(INCREMENT(RIGHT(p.asInstanceOf[FBPair]).asInstanceOf[FBInt]))
+  val INCREMENT: FBInt => FBInt =
+    (n: FBInt) => {
+      (p: Any => Any) => {
+        (x: Any) => p(n(p)(x))
+      }
     }
-  }
+  val DECREMENT: FBInt => FBInt =
+    (n: FBInt) => LEFT( n(SLIDE)(PAIR(ZERO)(ZERO)).asInstanceOf[FBPair] ).asInstanceOf[FBInt]
 
   // Boolean
   val TRUE: FBBool  = (x: Any) => { (y: Any) => { x } }

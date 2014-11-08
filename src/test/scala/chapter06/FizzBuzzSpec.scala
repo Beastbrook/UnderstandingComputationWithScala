@@ -58,4 +58,9 @@ class FizzBuzzSpec extends FlatSpec with Matchers {
     toInt(INCREMENT(HANDRED)) should be (101)
   }
 
+  "DECREMENT" should "create n-1" in {
+    toInt(DECREMENT(ONE)) should be (0)
+    toInt(DECREMENT(HANDRED)) should be (99)
+  }
+
 }
