@@ -4,7 +4,9 @@ import org.scalatest._
 
 class FizzBuzzSpec extends FlatSpec with Matchers {
 
-  val fizzbuzz: List[String] = FizzBuzz.make
+  import FizzBuzz._
+
+  val fizzbuzz: List[String] = make
 
   "FizzBuzz" should "be list of number, fizz, buzz and fizzbuzz" in {
     fizzbuzz(0) should be ("FizzBuzz")
@@ -18,30 +20,36 @@ class FizzBuzzSpec extends FlatSpec with Matchers {
   }
 
   "ONE,TWO,THREE" should "be able to translate to number" in {
-    FizzBuzz.toInt(FizzBuzz.ZERO) should be (0)
-    FizzBuzz.toInt(FizzBuzz.ONE) should be (1)
-    FizzBuzz.toInt(FizzBuzz.TWO) should be (2)
-    FizzBuzz.toInt(FizzBuzz.THREE) should be (3)
-    FizzBuzz.toInt(FizzBuzz.FIVE) should be (5)
-    FizzBuzz.toInt(FizzBuzz.FIFTEEN) should be (15)
-    FizzBuzz.toInt(FizzBuzz.HANDRED) should be (100)
+    toInt(ZERO) should be (0)
+    toInt(ONE) should be (1)
+    toInt(TWO) should be (2)
+    toInt(THREE) should be (3)
+    toInt(FIVE) should be (5)
+    toInt(FIFTEEN) should be (15)
+    toInt(HANDRED) should be (100)
   }
 
   "TRUE,FALSE" should "be able to translate to boolean" in {
-    FizzBuzz.toBoolean(FizzBuzz.TRUE) should be (true)
-    FizzBuzz.toBoolean(FizzBuzz.FALSE) should be (false)
+    toBoolean(TRUE) should be (true)
+    toBoolean(FALSE) should be (false)
   }
 
   "IF" should "work like if" in {
-    FizzBuzz.toInt(FizzBuzz.IF(FizzBuzz.TRUE)(FizzBuzz.ONE)(FizzBuzz.TWO).asInstanceOf[FizzBuzz.FBInt]) should be (1)
-    FizzBuzz.toInt(FizzBuzz.IF(FizzBuzz.FALSE)(FizzBuzz.ONE)(FizzBuzz.TWO).asInstanceOf[FizzBuzz.FBInt]) should be (2)
-    FizzBuzz.IF(FizzBuzz.TRUE)("happy")("sad").asInstanceOf[String] should be ("happy")
-    FizzBuzz.IF(FizzBuzz.FALSE)("happy")("sad").asInstanceOf[String] should be ("sad")
+    toInt(IF(TRUE)(ONE)(TWO).asInstanceOf[FBInt]) should be (1)
+    toInt(IF(FALSE)(ONE)(TWO).asInstanceOf[FBInt]) should be (2)
+    IF(TRUE)("happy")("sad").asInstanceOf[String] should be ("happy")
+    IF(FALSE)("happy")("sad").asInstanceOf[String] should be ("sad")
   }
 
   "IS_ZERO" should "return true if n == 0" in {
-    FizzBuzz.toBoolean(FizzBuzz.IS_ZERO(FizzBuzz.ZERO)) should be (true)
-    FizzBuzz.toBoolean(FizzBuzz.IS_ZERO(FizzBuzz.ONE)) should be (false)
+    toBoolean(IS_ZERO(ZERO)) should be (true)
+    toBoolean(IS_ZERO(ONE)) should be (false)
+  }
+
+  "PAIR" should "have two values" in {
+    val myPair = PAIR(THREE)(FIVE)
+    toInt(LEFT(myPair).asInstanceOf[FBInt]) should be (3)
+    toInt(RIGHT(myPair).asInstanceOf[FBInt]) should be (5)
   }
 
 }

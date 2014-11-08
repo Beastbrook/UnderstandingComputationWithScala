@@ -17,6 +17,7 @@ object FizzBuzz {
   // type definition
   type FBInt  = (Any => Any) => (Any => Any)
   type FBBool = Any => Any => Any
+  type FBPair = (Any => Any => Any) => Any
 
   // Number
   val ZERO: FBInt    = (p: (Any => Any)) => { (x: Any) => x }
@@ -59,6 +60,18 @@ object FizzBuzz {
 
   val IS_ZERO: FBInt => FBBool =
     (n: FBInt) => n(_ => (FALSE))(TRUE).asInstanceOf[FBBool]
+
+  // pair
+  val PAIR: Any => Any => FBPair =
+    (x: Any) => {
+      (y: Any) => {
+        (f: Any => Any => Any) => f(x)(y)
+      }
+    }
+  val LEFT: FBPair => Any =
+    (p: FBPair) => p((x: Any) => {(y: Any) => x})
+  val RIGHT: FBPair => Any =
+    (p: FBPair) => p((x: Any) => {(y: Any) => y})
 
   // converters
   def toInt(f: FBInt): Int =
