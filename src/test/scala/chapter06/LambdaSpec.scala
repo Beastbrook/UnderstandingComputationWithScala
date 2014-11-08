@@ -50,4 +50,17 @@ class LambdaSpec extends FlatSpec with Matchers {
     toInt(DECREMENT(HANDRED)) should be (99)
   }
 
+  "ADD" should "return added value" in {
+    toInt(ADD(ONE)(INCREMENT(ONE))) should be (3)
+  }
+  "SUBTRACT" should "return subtracted value" in {
+    toInt(SUBTRACT(HANDRED)(ONE)) should be (99)
+  }
+  "MULTIPLY" should "return multiplied value" in {
+    toInt(MULTIPLY(TWO)(THREE)) should be (6)
+  }
+  "POWER" should "return powered value" in {
+    toInt(POWER(TWO)(THREE)) should be (8)
+  }
+
 }

@@ -38,15 +38,15 @@ object Lambda {
     ))))))))))
   }
   val SLIDE: Any => Any =
-    (p: Any) => PAIR(RIGHT(p.asInstanceOf[FBPair]))(INCREMENT(RIGHT(p.asInstanceOf[FBPair]).asInstanceOf[FBInt]))
-  val INCREMENT: FBInt => FBInt =
-    (n: FBInt) => {
+    (p: Any) => PAIR(RIGHT(p.asInstanceOf[FBPair]))(INCREMENT(RIGHT(p.asInstanceOf[FBPair])))
+  val INCREMENT: Any => Any =
+    (n: Any) => {
       (p: Any => Any) => {
-        (x: Any) => p(n(p)(x))
+        (x: Any) => p(n.asInstanceOf[FBInt](p)(x))
       }
     }
-  val DECREMENT: FBInt => FBInt =
-    (n: FBInt) => LEFT( n(SLIDE)(PAIR(ZERO)(ZERO)).asInstanceOf[FBPair] ).asInstanceOf[FBInt]
+  val DECREMENT: Any => Any =
+    (n: Any) => LEFT( n.asInstanceOf[FBInt](SLIDE)(PAIR(ZERO)(ZERO)).asInstanceOf[FBPair] )
 
   // Boolean
   val TRUE: FBBool  = (x: Any) => { (y: Any) => { x } }
@@ -71,9 +71,35 @@ object Lambda {
   val RIGHT: FBPair => Any =
     (p: FBPair) => p((x: Any) => {(y: Any) => y})
 
+  // calc
+  val ADD: Any => Any => Any =
+    (m: Any) => {
+      (n: Any) => {
+        n.asInstanceOf[FBInt](INCREMENT)(m)
+      }
+    }
+  val SUBTRACT: Any => Any => Any =
+    (m: Any) => {
+      (n: Any) => {
+        n.asInstanceOf[FBInt](DECREMENT)(m)
+      }
+    }
+  val MULTIPLY: Any => Any => Any =
+    (m: Any) => {
+      (n: Any) => {
+        n.asInstanceOf[FBInt](ADD(m))(ZERO)
+      }
+    }
+  val POWER: Any => Any => Any =
+    (m: Any) => {
+      (n: Any) => {
+        n.asInstanceOf[FBInt](MULTIPLY(m))(ONE)
+      }
+    }
+
   // converters
-  def toInt(f: FBInt): Int =
-    f(_.asInstanceOf[Int] + 1)(0).asInstanceOf[Int]
+  def toInt(f: Any): Int =
+    f.asInstanceOf[FBInt](_.asInstanceOf[Int] + 1)(0).asInstanceOf[Int]
   def toBoolean(f: Any => Any => Any): Boolean =
     f(true)(false).asInstanceOf[Boolean]
   def toFBBool(b: Boolean): FBBool =
