@@ -56,8 +56,15 @@ object Lambda {
   val IF: FBBool => Any => Any => Any =
     (bool: FBBool) => bool
 
-  val IS_ZERO: FBInt => FBBool =
-    (n: FBInt) => n(_ => (FALSE))(TRUE).asInstanceOf[FBBool]
+  // compare
+  val IS_ZERO: Any => FBBool =
+    (n: Any) => n.asInstanceOf[FBInt](_ => (FALSE))(TRUE).asInstanceOf[FBBool]
+  val IS_LESS_OR_EQUAL: Any => Any => Any =
+    (m: Any) => {
+      (n: Any) => {
+        IS_ZERO(SUBTRACT(m)(n))
+      }
+    }
 
   // pair
   val PAIR: Any => Any => FBPair =
@@ -100,8 +107,8 @@ object Lambda {
   // converters
   def toInt(f: Any): Int =
     f.asInstanceOf[FBInt](_.asInstanceOf[Int] + 1)(0).asInstanceOf[Int]
-  def toBoolean(f: Any => Any => Any): Boolean =
-    f(true)(false).asInstanceOf[Boolean]
+  def toBoolean(f: Any): Boolean =
+    f.asInstanceOf[FBBool](true)(false).asInstanceOf[Boolean]
   def toFBBool(b: Boolean): FBBool =
     if (b) TRUE else FALSE
 

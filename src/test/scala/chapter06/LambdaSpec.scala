@@ -63,4 +63,10 @@ class LambdaSpec extends FlatSpec with Matchers {
     toInt(POWER(TWO)(THREE)) should be (8)
   }
 
+  "IS_LESS_OR_EQUAL" should "return if A value is less than or equal B or not" in {
+    toBoolean(IS_LESS_OR_EQUAL(ONE)(TWO)) should be (true)
+    toBoolean(IS_LESS_OR_EQUAL(ONE)(ONE)) should be (true)
+    toBoolean(IS_LESS_OR_EQUAL(TWO)(ONE)) should be (false)
+  }
+
 }
