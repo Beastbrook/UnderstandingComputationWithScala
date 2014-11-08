@@ -49,6 +49,11 @@ object FizzBuzz {
     ))))))))))
     ))))))))))
   }
+  val INCREMENT: FBInt => FBInt = (n: FBInt) => {
+    (p: Any => Any) => {
+      (x: Any) => p(n(p)(x))
+    }
+  }
 
   // Boolean
   val TRUE: FBBool  = (x: Any) => { (y: Any) => { x } }

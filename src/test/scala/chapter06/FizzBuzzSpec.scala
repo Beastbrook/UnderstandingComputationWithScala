@@ -52,4 +52,10 @@ class FizzBuzzSpec extends FlatSpec with Matchers {
     toInt(RIGHT(myPair).asInstanceOf[FBInt]) should be (5)
   }
 
+  "INCREMENT" should "create n+1" in {
+    toInt(INCREMENT(ZERO)) should be (1)
+    toInt(INCREMENT(INCREMENT(ZERO))) should be (2)
+    toInt(INCREMENT(HANDRED)) should be (101)
+  }
+
 }
