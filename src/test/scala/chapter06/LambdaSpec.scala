@@ -62,6 +62,11 @@ class LambdaSpec extends FlatSpec with Matchers {
   "POWER" should "return powered value" in {
     toInt(POWER(TWO)(THREE)) should be (8)
   }
+  "MOD" should "return modular value" in {
+    toInt(MOD(HANDRED)(THREE)) should be (1)
+    toInt(MOD(FIVE)(FIVE)) should be (0)
+    toInt(MOD(THREE)(FIVE)) should be (3)
+  }
 
   "IS_LESS_OR_EQUAL" should "return if A value is less than or equal B or not" in {
     toBoolean(IS_LESS_OR_EQUAL(ONE)(TWO)) should be (true)

@@ -103,6 +103,16 @@ object Lambda {
         n.asInstanceOf[FBInt](MULTIPLY(m))(ONE)
       }
     }
+  val MOD: Any => Any => Any =
+    (m: Any) => {
+      (n: Any) => {
+        IF(IS_LESS_OR_EQUAL(n)(m).asInstanceOf[FBBool])(
+          (x: Any => Any) => MOD(SUBTRACT(m)(n))(n).asInstanceOf[FBInt](x)
+        )(
+          m
+        )
+      }
+    }
 
   // converters
   def toInt(f: Any): Int =
