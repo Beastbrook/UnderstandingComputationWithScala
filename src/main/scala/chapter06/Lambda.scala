@@ -125,6 +125,18 @@ object Lambda {
       }
     )
 
+  val EMPTY: FBPair = PAIR(TRUE)(TRUE)
+  val UNSHIFT: FBPair => Any => FBPair = (l: FBPair) => { (x: Any) =>
+    PAIR(FALSE)(PAIR(x)(l))
+  }
+  val IS_EMPTY: FBPair => Any = LEFT
+  val FIRST: FBPair => Any = (l: FBPair) => {
+    LEFT(RIGHT(l).asInstanceOf[FBPair])
+  }
+  val REST: FBPair => FBPair = (l: FBPair) => {
+    RIGHT(RIGHT(l).asInstanceOf[FBPair]).asInstanceOf[FBPair]
+  }
+
   // converters
   def toInt(f: Any): Int =
     f.asInstanceOf[FBInt](_.asInstanceOf[Int] + 1)(0).asInstanceOf[Int]
@@ -132,5 +144,10 @@ object Lambda {
     f.asInstanceOf[FBBool](true)(false).asInstanceOf[Boolean]
   def toFBBool(b: Boolean): FBBool =
     if (b) TRUE else FALSE
+  def toList(l: FBPair): List[Any] = l match {
+    case li if toBoolean(IS_EMPTY(li)) => Nil
+    case li: FBPair => FIRST(li) :: toList(REST(li))
+  }
+
 
 }

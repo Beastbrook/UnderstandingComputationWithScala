@@ -74,4 +74,19 @@ class LambdaSpec extends FlatSpec with Matchers {
     toBoolean(IS_LESS_OR_EQUAL(TWO)(ONE)) should be (false)
   }
 
+  "LIST" should "contain values" in {
+    val myList = UNSHIFT(
+      UNSHIFT(
+        UNSHIFT(EMPTY)(THREE)
+      )(FIVE)
+    )(HANDRED)
+    toInt(FIRST(myList)) should be (100)
+    toInt(FIRST(REST(myList))) should be (5)
+    toInt(FIRST(REST(REST(myList)))) should be (3)
+    toBoolean(IS_EMPTY(EMPTY)) should be (true)
+    toBoolean(IS_EMPTY(myList)) should be (false)
+
+    toList(myList).map(toInt) should be (List(100, 5, 3))
+  }
+
 }
