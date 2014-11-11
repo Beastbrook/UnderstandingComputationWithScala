@@ -89,4 +89,9 @@ class LambdaSpec extends FlatSpec with Matchers {
     toList(myList).map(toInt) should be (List(100, 5, 3))
   }
 
+  "RANGE" should "create a list" in {
+    val range: FBPair = RANGE(ONE)(FIVE).asInstanceOf[FBPair]
+    toList(range).map(toInt) should be (List(1, 2, 3, 4, 5))
+  }
+
 }

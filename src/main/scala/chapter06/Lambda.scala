@@ -125,6 +125,7 @@ object Lambda {
       }
     )
 
+  // LIST
   val EMPTY: FBPair = PAIR(TRUE)(TRUE)
   val UNSHIFT: FBPair => Any => FBPair = (l: FBPair) => { (x: Any) =>
     PAIR(FALSE)(PAIR(x)(l))
@@ -136,6 +137,22 @@ object Lambda {
   val REST: FBPair => FBPair = (l: FBPair) => {
     RIGHT(RIGHT(l).asInstanceOf[FBPair]).asInstanceOf[FBPair]
   }
+
+  // Range
+  val RANGE: Any => Any => Any =
+    Z(
+      (f: Any => Any => Any) => {
+        (m: Any) => {
+          (n: Any) => {
+            IF(IS_LESS_OR_EQUAL(m.asInstanceOf[FBInt])(n.asInstanceOf[FBInt]).asInstanceOf[FBBool])(
+              UNSHIFT( f(INCREMENT(m).asInstanceOf[FBInt])(n).asInstanceOf[FBPair] )(m).asInstanceOf[FBPair](_: Any => Any => Any)
+            )(
+              EMPTY
+            )
+          }
+        }
+      }
+    )
 
   // converters
   def toInt(f: Any): Int =
