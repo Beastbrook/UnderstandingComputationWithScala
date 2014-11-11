@@ -7,6 +7,12 @@ object Lambda {
   type FBBool = Any => Any => Any
   type FBPair = (Any => Any => Any) => Any
 
+  // combinator
+  val Z: ((Any => Any => Any) => (Any => Any => Any)) => (Any => Any => Any) =
+    (f: (Any => Any => Any) => (Any => Any => Any)) => {
+      (x: Any) => f(Z(f))(x)
+    }
+
   // Number
   val ZERO: FBInt    = (p: (Any => Any)) => { (x: Any) => x }
   val ONE: FBInt     = (p: (Any => Any)) => { (x: Any) => p(x) }
@@ -103,16 +109,21 @@ object Lambda {
         n.asInstanceOf[FBInt](MULTIPLY(m))(ONE)
       }
     }
+
   val MOD: Any => Any => Any =
-    (m: Any) => {
-      (n: Any) => {
-        IF(IS_LESS_OR_EQUAL(n)(m).asInstanceOf[FBBool])(
-          (x: Any => Any) => MOD(SUBTRACT(m)(n))(n).asInstanceOf[FBInt](x)
-        )(
-          m
-        )
+    Z(
+      (f: Any => Any => Any) => {
+        (m: Any) => {
+          (n: Any) => {
+            IF(IS_LESS_OR_EQUAL(n)(m).asInstanceOf[FBBool])(
+              (x: Any => Any) => { f(SUBTRACT(m)(n))(n).asInstanceOf[FBInt](x) }
+            )(
+              m
+            )
+          }
+        }
       }
-    }
+    )
 
   // converters
   def toInt(f: Any): Int =
