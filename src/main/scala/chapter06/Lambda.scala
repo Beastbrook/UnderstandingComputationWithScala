@@ -12,6 +12,10 @@ object Lambda {
     (f: (Any => Any => Any) => (Any => Any => Any)) => {
       (x: Any) => f(Z(f))(x)
     }
+  val Z2: ((Any => Any => (Any => Any => Any) => Any) => (Any => Any => (Any => Any => Any) => Any)) => (Any => Any => (Any => Any => Any) => Any) =
+    (f: (Any => Any => (Any => Any => Any) => Any) => (Any => Any => (Any => Any => Any) => Any)) => {
+      (x: Any) => f(Z2(f))(x)
+    }
 
   // Number
   val ZERO: FBInt    = (p: (Any => Any)) => { (x: Any) => x }
@@ -138,6 +142,45 @@ object Lambda {
     RIGHT(RIGHT(l).asInstanceOf[FBPair]).asInstanceOf[FBPair]
   }
 
+  // LIST utility
+  val FOLD: Any => Any => (Any => Any => Any) => Any =
+    Z2(
+      (f: Any => Any => (Any => Any => Any) => Any) => {
+        (list: Any) => {
+          (x: Any) => {
+            (g: Any => Any => Any) => {
+              IF( IS_EMPTY(list.asInstanceOf[FBPair]).asInstanceOf[FBBool] )(
+                x
+              )(
+                g(
+                  f(
+                    REST(list.asInstanceOf[FBPair])
+                  )(
+                    x
+                  )(
+                    g
+                  ).asInstanceOf[FBInt](_: Any => Any)
+                )(
+                  FIRST(list.asInstanceOf[FBPair])
+                )
+              )
+            }
+          }
+        }
+      }
+    )
+
+  val MAP: Any => (Any => Any) => Any =
+    (list: Any) => {
+      (f: Any => Any) => {
+        IF(IS_EMPTY(list.asInstanceOf[FBPair]).asInstanceOf[FBBool])(
+          EMPTY
+        )(
+          UNSHIFT( MAP(REST(list.asInstanceOf[FBPair]))(f).asInstanceOf[FBPair](_: Any => Any => Any) )( f(FIRST(list.asInstanceOf[FBPair])) )
+        )
+      }
+    }
+
   // Range
   val RANGE: Any => Any => Any =
     Z(
@@ -165,6 +208,5 @@ object Lambda {
     case li if toBoolean(IS_EMPTY(li)) => Nil
     case li: FBPair => FIRST(li) :: toList(REST(li))
   }
-
 
 }

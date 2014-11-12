@@ -94,4 +94,13 @@ class LambdaSpec extends FlatSpec with Matchers {
     toList(range).map(toInt) should be (List(1, 2, 3, 4, 5))
   }
 
+  "FOLD" should "traverse list" in {
+    toInt( FOLD(RANGE(ONE)(FIVE).asInstanceOf[FBPair])(ZERO)(ADD) ) should be (15)
+  }
+
+  "MAP" should "return new List" in {
+    val myList = MAP(RANGE(ONE)(FIVE))(INCREMENT)
+    toList(myList.asInstanceOf[FBPair]).map(toInt) should be (List(2, 3, 4, 5, 6))
+  }
+
 }
