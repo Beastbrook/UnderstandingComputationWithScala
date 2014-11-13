@@ -6,6 +6,7 @@ object Lambda {
   type FBInt  = (Any => Any) => (Any => Any)
   type FBBool = Any => Any => Any
   type FBPair = (Any => Any => Any) => Any
+  type FBString = FBPair
 
   // combinator
   val Z: ((Any => Any => Any) => (Any => Any => Any)) => (Any => Any => Any) =
@@ -197,6 +198,18 @@ object Lambda {
       }
     )
 
+  // String
+  val TEN: FBInt = MULTIPLY(TWO)(FIVE).asInstanceOf[FBInt]
+  val B: FBInt   = TEN
+  val F: FBInt   = INCREMENT(B).asInstanceOf[FBInt]
+  val I: FBInt   = INCREMENT(F).asInstanceOf[FBInt]
+  val U: FBInt   = INCREMENT(I).asInstanceOf[FBInt]
+  val ZED: FBInt = INCREMENT(U).asInstanceOf[FBInt]
+
+  val FIZZ: FBString = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(I))(F)
+  val BUZZ: FBString = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(U))(B)
+  val FIZZBUZZ: FBString = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(U))(B))(ZED))(ZED))(I))(F)
+
   // converters
   def toInt(f: Any): Int =
     f.asInstanceOf[FBInt](_.asInstanceOf[Int] + 1)(0).asInstanceOf[Int]
@@ -208,5 +221,9 @@ object Lambda {
     case li if toBoolean(IS_EMPTY(li)) => Nil
     case li: FBPair => FIRST(li) :: toList(REST(li))
   }
+  def toChar(c: Any): Char =
+    "0123456789BFiuz".charAt(toInt(c))
+  def toStr(str: FBString): String =
+    toList(str.asInstanceOf[FBPair]).map(toChar).mkString("", "", "")
 
 }

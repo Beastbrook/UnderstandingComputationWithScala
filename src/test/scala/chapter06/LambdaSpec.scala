@@ -103,4 +103,14 @@ class LambdaSpec extends FlatSpec with Matchers {
     toList(myList.asInstanceOf[FBPair]).map(toInt) should be (List(2, 3, 4, 5, 6))
   }
 
+  "FBString" should "be abe to convert to String" in {
+    toChar(ZERO) should be ('0')
+    toChar(B) should be ('B')
+    toChar(ZED) should be ('z')
+    toList(BUZZ).map(toChar) should be (List('B', 'u', 'z', 'z'))
+    toStr(BUZZ) should be ("Buzz")
+    toStr(FIZZ) should be ("Fizz")
+    toStr(FIZZBUZZ) should be ("FizzBuzz")
+  }
+
 }
