@@ -67,6 +67,9 @@ class LambdaSpec extends FlatSpec with Matchers {
     toInt(MOD(FIVE)(FIVE)) should be (0)
     toInt(MOD(THREE)(FIVE)) should be (3)
   }
+  "DIV" should "divide value" in {
+    toInt(DIV(TEN)(TWO)) should be (5)
+  }
 
   "IS_LESS_OR_EQUAL" should "return if A value is less than or equal B or not" in {
     toBoolean(IS_LESS_OR_EQUAL(ONE)(TWO)) should be (true)
@@ -103,6 +106,11 @@ class LambdaSpec extends FlatSpec with Matchers {
     toList(myList.asInstanceOf[FBPair]).map(toInt) should be (List(2, 3, 4, 5, 6))
   }
 
+  "PUSH" should "add element at tail of list" in {
+    val myList = RANGE(ONE)(FIVE).asInstanceOf[FBPair]
+    toStr(PUSH(myList)(B).asInstanceOf[FBString]) should be ("12345B")
+  }
+
   "FBString" should "be abe to convert to String" in {
     toChar(ZERO) should be ('0')
     toChar(B) should be ('B')
@@ -111,6 +119,11 @@ class LambdaSpec extends FlatSpec with Matchers {
     toStr(BUZZ) should be ("Buzz")
     toStr(FIZZ) should be ("Fizz")
     toStr(FIZZBUZZ) should be ("FizzBuzz")
+  }
+
+  "TO_DIGITS" should "convert 125 to List(1, 2, 5)" in {
+    val n = TO_DIGITS(POWER(FIVE)(THREE)).asInstanceOf[FBString]
+    toStr(n) should be ("125")
   }
 
 }

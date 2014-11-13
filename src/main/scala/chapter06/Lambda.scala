@@ -114,6 +114,16 @@ object Lambda {
         n.asInstanceOf[FBInt](MULTIPLY(m))(ONE)
       }
     }
+  val DIV: Any => Any => Any =
+    (m: Any) => {
+      (n: Any) => {
+        IF(IS_LESS_OR_EQUAL(n)(m).asInstanceOf[FBBool])(
+          INCREMENT(DIV(SUBTRACT(m)(n))(n).asInstanceOf[FBInt](_: Any => Any))
+        )(
+          ZERO
+        )
+      }
+    }
 
   val MOD: Any => Any => Any =
     Z(
@@ -182,6 +192,21 @@ object Lambda {
       }
     }
 
+  val PUSH: Any => Any => Any =
+    (list: Any) => {
+      (x: Any) => {
+        IF(IS_EMPTY(list.asInstanceOf[FBPair]).asInstanceOf[FBBool])(
+          UNSHIFT(EMPTY)(x)
+        )(
+          UNSHIFT(
+            PUSH( REST(list.asInstanceOf[FBPair]) )(x).asInstanceOf[FBPair](_: Any => Any => Any)
+          )(
+            FIRST(list.asInstanceOf[FBPair])
+          )
+        )
+      }
+    }
+
   // Range
   val RANGE: Any => Any => Any =
     Z(
@@ -209,6 +234,19 @@ object Lambda {
   val FIZZ: FBString = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(I))(F)
   val BUZZ: FBString = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(U))(B)
   val FIZZBUZZ: FBString = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(U))(B))(ZED))(ZED))(I))(F)
+
+  val TO_DIGITS: Any => Any =
+    (n: Any) => {
+      PUSH(
+        IF( IS_LESS_OR_EQUAL(n)(DECREMENT(TEN)).asInstanceOf[FBBool] )(
+          EMPTY
+        )(
+          TO_DIGITS(DIV(n)(TEN)).asInstanceOf[FBPair](_: Any => Any => Any)
+        )
+      )(
+        MOD(n)(TEN)
+      )
+    }
 
   // converters
   def toInt(f: Any): Int =
