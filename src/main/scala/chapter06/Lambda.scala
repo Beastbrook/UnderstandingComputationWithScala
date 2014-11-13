@@ -6,7 +6,6 @@ object Lambda {
   type FBInt  = (Any => Any) => (Any => Any)
   type FBBool = Any => Any => Any
   type FBPair = (Any => Any => Any) => Any
-  type FBString = FBPair
 
   // combinator
   val Z: ((Any => Any => Any) => (Any => Any => Any)) => (Any => Any => Any) =
@@ -70,7 +69,7 @@ object Lambda {
   // compare
   val IS_ZERO: Any => FBBool =
     (n: Any) => n.asInstanceOf[FBInt](_ => (FALSE))(TRUE).asInstanceOf[FBBool]
-  val IS_LESS_OR_EQUAL: Any => Any => Any =
+  val IS_LESS_OR_EQUAL: Any => Any => FBBool =
     (m: Any) => {
       (n: Any) => {
         IS_ZERO(SUBTRACT(m)(n))
@@ -117,7 +116,7 @@ object Lambda {
   val DIV: Any => Any => Any =
     (m: Any) => {
       (n: Any) => {
-        IF(IS_LESS_OR_EQUAL(n)(m).asInstanceOf[FBBool])(
+        IF(IS_LESS_OR_EQUAL(n)(m))(
           INCREMENT(DIV(SUBTRACT(m)(n))(n).asInstanceOf[FBInt](_: Any => Any))
         )(
           ZERO
@@ -130,7 +129,7 @@ object Lambda {
       (f: Any => Any => Any) => {
         (m: Any) => {
           (n: Any) => {
-            IF(IS_LESS_OR_EQUAL(n)(m).asInstanceOf[FBBool])(
+            IF(IS_LESS_OR_EQUAL(n)(m))(
               (x: Any => Any) => { f(SUBTRACT(m)(n))(n).asInstanceOf[FBInt](x) }
             )(
               m
@@ -213,7 +212,7 @@ object Lambda {
       (f: Any => Any => Any) => {
         (m: Any) => {
           (n: Any) => {
-            IF(IS_LESS_OR_EQUAL(m.asInstanceOf[FBInt])(n.asInstanceOf[FBInt]).asInstanceOf[FBBool])(
+            IF(IS_LESS_OR_EQUAL(m.asInstanceOf[FBInt])(n.asInstanceOf[FBInt]))(
               UNSHIFT( f(INCREMENT(m).asInstanceOf[FBInt])(n).asInstanceOf[FBPair] )(m).asInstanceOf[FBPair](_: Any => Any => Any)
             )(
               EMPTY
@@ -231,9 +230,9 @@ object Lambda {
   val U: FBInt   = INCREMENT(I).asInstanceOf[FBInt]
   val ZED: FBInt = INCREMENT(U).asInstanceOf[FBInt]
 
-  val FIZZ: FBString = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(I))(F)
-  val BUZZ: FBString = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(U))(B)
-  val FIZZBUZZ: FBString = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(U))(B))(ZED))(ZED))(I))(F)
+  val FIZZ: FBPair = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(I))(F)
+  val BUZZ: FBPair = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(U))(B)
+  val FIZZBUZZ: FBPair = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ZED))(ZED))(U))(B))(ZED))(ZED))(I))(F)
 
   val TO_DIGITS: Any => Any =
     (n: Any) => {
@@ -261,7 +260,7 @@ object Lambda {
   }
   def toChar(c: Any): Char =
     "0123456789BFiuz".charAt(toInt(c))
-  def toStr(str: FBString): String =
+  def toStr(str: Any): String =
     toList(str.asInstanceOf[FBPair]).map(toChar).mkString("", "", "")
 
 }

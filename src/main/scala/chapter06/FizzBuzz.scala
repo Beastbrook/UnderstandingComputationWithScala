@@ -4,16 +4,29 @@ object FizzBuzz {
 
   import Lambda._
 
-  // Main fizzbuzz program
-  def make: List[String] =
-    (toInt(ZERO) to toInt(HANDRED))
-      .toList
-      .map((n: Int) => {
-        IF(toFBBool(n % 15 == 0))("FizzBuzz")(
-          IF(toFBBool(n % 3  == 0))("Fizz")(
-            IF(toFBBool(n % 5  == 0))("Buzz")(n.toString)
+  val CONVERT: Any => Any =
+    (n: Any) => {
+      IF( IS_LESS_OR_EQUAL( MOD(n)(FIFTEEN) )(ZERO) )(
+        FIZZBUZZ
+      )(
+        IF( IS_LESS_OR_EQUAL( MOD(n)(THREE) )(ZERO) )(
+          FIZZ
+        )(
+          IF( IS_LESS_OR_EQUAL( MOD(n)(FIVE) )(ZERO) )(
+            BUZZ
+          )(
+            TO_DIGITS(n)
           )
-        ).asInstanceOf[String]
-      })
+        )
+      )
+    }
+
+  // Main fizzbuzz program
+  def make = {
+    val fizzbuzz: FBPair = MAP(RANGE(ZERO)(HANDRED))(CONVERT).asInstanceOf[FBPair]
+    toList(fizzbuzz)
+      .map(toStr)
+  }
+
 
 }

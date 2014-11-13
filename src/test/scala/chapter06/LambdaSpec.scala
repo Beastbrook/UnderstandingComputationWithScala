@@ -35,8 +35,8 @@ class LambdaSpec extends FlatSpec with Matchers {
 
   "PAIR" should "have two values" in {
     val myPair = PAIR(THREE)(FIVE)
-    toInt(LEFT(myPair).asInstanceOf[FBInt]) should be (3)
-    toInt(RIGHT(myPair).asInstanceOf[FBInt]) should be (5)
+    toInt(LEFT(myPair)) should be (3)
+    toInt(RIGHT(myPair)) should be (5)
   }
 
   "INCREMENT" should "create n+1" in {
@@ -108,7 +108,7 @@ class LambdaSpec extends FlatSpec with Matchers {
 
   "PUSH" should "add element at tail of list" in {
     val myList = RANGE(ONE)(FIVE).asInstanceOf[FBPair]
-    toStr(PUSH(myList)(B).asInstanceOf[FBString]) should be ("12345B")
+    toStr(PUSH(myList)(B)) should be ("12345B")
   }
 
   "FBString" should "be abe to convert to String" in {
@@ -122,7 +122,7 @@ class LambdaSpec extends FlatSpec with Matchers {
   }
 
   "TO_DIGITS" should "convert 125 to List(1, 2, 5)" in {
-    val n = TO_DIGITS(POWER(FIVE)(THREE)).asInstanceOf[FBString]
+    val n = TO_DIGITS(POWER(FIVE)(THREE))
     toStr(n) should be ("125")
   }
 
