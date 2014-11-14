@@ -18,4 +18,9 @@ class ExpandedLambdaSpec extends FlatSpec with Matchers {
     slice(UPWARDS_OF(FIVE), 5).map(toChar).mkString("", "", "") should be ("56789")
   }
 
+  "MULTIPLES_OF" should "return multiple list" in {
+    slice(MULTIPLES_OF(TWO), 5).map(toInt) should be (List(2, 4, 6, 8, 10))
+    slice(MULTIPLES_OF(THREE), 5).map(toInt) should be (List(3, 6, 9, 12, 15))
+  }
+
 }
