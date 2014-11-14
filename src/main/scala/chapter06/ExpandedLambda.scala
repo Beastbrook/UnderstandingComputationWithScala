@@ -6,6 +6,10 @@ object ExpandedLambda {
 
   // stream
   val ZEROS: FBPair = UNSHIFT(ZEROS(_: Any => Any => Any))(ZERO)
+  val UPWARDS_OF: Any => FBPair =
+    (x: Any) => {
+      UNSHIFT(UPWARDS_OF(INCREMENT(x))(_: Any => Any => Any))(x)
+    }
 
   // converter
   def slice(stream: Any, n: Int): List[Any] =

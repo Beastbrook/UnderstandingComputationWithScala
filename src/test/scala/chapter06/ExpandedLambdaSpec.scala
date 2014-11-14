@@ -13,4 +13,9 @@ class ExpandedLambdaSpec extends FlatSpec with Matchers {
     slice(ZEROS, 5).map(toChar).mkString("", "", "") should be ("00000")
   }
 
+  "UPWARDS_OF" should "return count down list" in {
+    slice(UPWARDS_OF(ZERO), 5).map(toChar).mkString("", "", "") should be ("01234")
+    slice(UPWARDS_OF(FIVE), 5).map(toChar).mkString("", "", "") should be ("56789")
+  }
+
 }
