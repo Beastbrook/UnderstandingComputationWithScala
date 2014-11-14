@@ -18,6 +18,12 @@ object ExpandedLambda {
     }
   val MULTIPLES_OF: Any => FBPair =
     (x: Any) => _MULTIPLES_OF(x)(x)
+  val MULTIPLY_STREAM: FBPair => FBPair => FBPair =
+    (stream1: FBPair) => {
+      (stream2: FBPair) => {
+        UNSHIFT( MULTIPLY_STREAM(REST(stream1))(REST(stream2))(_: Any => Any => Any) )(MULTIPLY(FIRST(stream1))(FIRST(stream2)))
+      }
+    }
 
   // converter
   def slice(stream: Any, n: Int): List[Any] =

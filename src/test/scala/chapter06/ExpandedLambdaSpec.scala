@@ -23,4 +23,8 @@ class ExpandedLambdaSpec extends FlatSpec with Matchers {
     slice(MULTIPLES_OF(THREE), 5).map(toInt) should be (List(3, 6, 9, 12, 15))
   }
 
+  "MULTIPLY_STREAM" should "multiply two streams" in {
+    slice(MULTIPLY_STREAM(MULTIPLES_OF(THREE))(UPWARDS_OF(ONE)), 5).map(toInt) should be (List(3, 12, 27, 48, 75))
+  }
+
 }
