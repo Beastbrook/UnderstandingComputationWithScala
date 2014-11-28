@@ -73,4 +73,14 @@ class LCSpec extends FlatSpec with Matchers {
     expression4.replace("y", LCVariable("z")).toString should be ("x[z][-> y { y[x] }]")
   }
 
+  "LCFunction" should "be called" in {
+    val function = LCFunction("x",
+      LCFunction("y",
+        LCCall(LCVariable("x"), LCVariable("y"))
+      )
+    )
+    function.toString should be ("-> x { -> y { x[y] } }")
+    val argument = LCFunction("z", LCVariable("z"))
+    function.call(argument).toString should be ("-> y { -> z { z }[y] }")
+  }
 }

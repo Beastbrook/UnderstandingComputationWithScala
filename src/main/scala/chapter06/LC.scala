@@ -17,6 +17,8 @@ case class LCFunction(parameter: String, body: LC) extends LC {
   override def replace(name: String, replacement: LC): LC =
     if (parameter == name) this
     else LCFunction(parameter, body.replace(name, replacement))
+  def call(arg: LC): LC =
+    body.replace(parameter, arg)
 }
 case class LCCall(left: LC, right: LC) extends LC {
   override def toString: String =
